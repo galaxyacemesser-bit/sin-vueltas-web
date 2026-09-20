@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Registro profesional | Sin Vueltas</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      --bg: #031116;
+      --card: #081d23;
+      --green: #14e7b7;
+      --text: #f4fbfa;
+      --muted: #91aaa7;
+      --border: rgba(255,255,255,.10);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Montserrat", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 85% 10%, rgba(20,231,183,.10), transparent 30%),
+        radial-gradient(circle at 10% 70%, rgba(20,231,183,.05), transparent 30%),
+        var(--bg);
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    .topbar {
+      min-height: 94px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(3,17,22,.92);
+      display: flex;
+      align-items: center;
+    }
+
+    .topbar-inner {
+      width: min(1180px, calc(100% - 40px));
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .logo {
+      width: 215px;
+      max-height: 76px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .back-link {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .back-link:hover {
+      color: var(--green);
+    }
+
+    main {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 70px 0 90px;
+    }
+
+    .intro {
+      max-width: 790px;
+      margin-bottom: 45px;
+    }
+
+    .eyebrow {
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+    }
+
+    h1 {
+      font-size: clamp(38px, 6vw, 66px);
+      line-height: .98;
+      letter-spacing: -3px;
+      font-weight: 900;
+      margin-bottom: 22px;
+    }
+
+    h1 span {
+      color: var(--green);
+    }
+
+    .intro p {
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.7;
+      max-width: 700px;
+    }
+
+    .founder-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 25px;
+      padding: 11px 16px;
+      border: 1px solid rgba(20,231,183,.25);
+      border-radius: 999px;
+      background: rgba(20,231,183,.07);
+      color: #cafff2;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .founder-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 14px rgba(20,231,183,.8);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(280px, .7fr);
+      gap: 28px;
+      align-items: start;
+    }
+
+    .form-card,
+    .side-card {
+      border: 1px solid var(--border);
+      background: linear-gradient(
+        145deg,
+        rgba(11,37,43,.94),
+        rgba(5,24,30,.94)
+      );
+      border-radius: 25px;
+    }
+
+    .form-card {
+      padding: 34px;
+    }
+
+    .side-card {
+      padding: 28px;
+      position: sticky;
+      top: 25px;
+    }
+
+    .section {
+      padding: 5px 0 32px;
+      margin-bottom: 27px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section:last-of-type {
+      border-bottom: 0;
+      margin-bottom: 0;
+    }
+
+    .section-number {
+      color: var(--green);
+      font-size: 11px;
+      letter-spacing: 2px;
+      font-weight: 900;
+      margin-bottom: 7px;
+    }
+
+    .section h2 {
+      font-size: 21px;
+      margin-bottom: 7px;
+    }
+
+    .section-description {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+      margin-bottom: 22px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 18px;
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    .field:last-child {
+      margin-bottom: 0;
+    }
+
+    .field-label {
+      display: block;
+      color: #dcebe8;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: rgba(0,0,0,.18);
+      color: white;
+      padding: 14px 15px;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: rgba(20,231,183,.65);
+      background: rgba(20,231,183,.035);
+    }
+
+    select option {
+      background: #092027;
+      color: white;
+    }
+
+    textarea {
+      min-height: 105px;
+      resize: vertical;
+    }
+
+    .help {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.5;
+      margin-top: 7px;
+    }
+
+    .checks {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 11px;
+    }
+
+    .check {
+      position: relative;
+    }
+
+    .check input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .check label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 51px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: rgba(0,0,0,.15);
+      color: #c7d7d4;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .check input:checked + label {
+      color: white;
+      border-color: rgba(20,231,183,.5);
+      background: rgba(20,231,183,.09);
+    }
+
+    .checkmark {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 18px;
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 5px;
+      display: grid;
+      place-items: center;
+      font-size: 11px;
+    }
+
+    .check input:checked + label .checkmark {
+      background: var(--green);
+      border-color: var(--green);
+      color: #031116;
+    }
+
+    .range-row {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    input[type="range"] {
+      padding: 0;
+      accent-color: var(--green);
+    }
+
+    .range-value {
+      min-width: 75px;
+      color: var(--green);
+      font-weight: 900;
+      text-align: right;
+    }
+
+    .submit-button {
+      width: 100%;
+      border: 0;
+      border-radius: 14px;
+      padding: 17px 20px;
+      background: var(--green);
+      color: #02110e;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .submit-button:disabled {
+      cursor: wait;
+      opacity: .6;
+    }
+
+    .message {
+      display: none;
+      margin-top: 17px;
+      border-radius: 13px;
+      padding: 14px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .message.error {
+      display: block;
+      border: 1px solid rgba(255,107,107,.35);
+      background: rgba(255,107,107,.08);
+      color: #ffb2b2;
+    }
+
+    .message.success {
+      display: block;
+      border: 1px solid rgba(20,231,183,.35);
+      background: rgba(20,231,183,.08);
+      color: #baffed;
+    }
+
+    .success-panel {
+      display: none;
+      padding: 45px 30px;
+      text-align: center;
+    }
+
+    .success-panel.visible {
+      display: block;
+    }
+
+    .success-icon {
+      width: 70px;
+      height: 70px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(20,231,183,.12);
+      border: 1px solid rgba(20,231,183,.4);
+      color: var(--green);
+      font-size: 30px;
+      font-weight: 900;
+    }
+
+    .success-panel h2 {
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    .success-panel p {
+      max-width: 560px;
+      margin: 0 auto 25px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .home-button {
+      display: inline-block;
+      padding: 14px 22px;
+      border-radius: 13px;
+      background: var(--green);
+      color: #02110e;
+      text-decoration: none;
+      font-weight: 900;
+    }
+
+    .side-card h3 {
+      font-size: 19px;
+      margin-bottom: 20px;
+    }
+
+    .steps {
+      list-style: none;
+    }
+
+    .steps li {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 13px;
+      padding: 0 0 22px;
+    }
+
+    .step-number {
+      width: 34px;
+      height: 34px;
+      border: 1px solid rgba(20,231,183,.35);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .step-text strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+
+    .step-text span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .free-box {
+      margin-top: 8px;
+      padding: 18px;
+      border-radius: 16px;
+      background: rgba(20,231,183,.075);
+      border: 1px solid rgba(20,231,183,.20);
+    }
+
+    .free-box strong {
+      display: block;
+      color: var(--green);
+      margin-bottom: 7px;
+      font-size: 13px;
+    }
+
+    .free-box p {
+      color: #b7cbc7;
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 27px 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    @media (max-width: 850px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .side-card {
+        position: static;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .topbar-inner,
+      main {
+        width: min(100% - 26px, 1180px);
+      }
+
+      .logo {
+        width: 170px;
+      }
+
+      .back-link {
+        font-size: 11px;
+      }
+
+      main {
+        padding-top: 45px;
+      }
+
+      h1 {
+        letter-spacing: -2px;
+      }
+
+      .form-card {
+        padding: 23px 18px;
+      }
+
+      .grid-2,
+      .checks {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+
+    <a href="index.html">
+      <img
+        src="sin-vueltas-logo-variante-a.png"
+        alt="Sin Vueltas"
+        class="logo"
+      >
+    </a>
+
+    <a href="index.html" class="back-link">
+      ← Volver al inicio
+    </a>
+
+  </div>
+</header>
+
+
+<main>
+
+  <section class="intro" id="intro">
+
+    <div class="eyebrow">
+      PROFESIONALES · BETA FUNDADORES
+    </div>
+
+    <h1>
+      Los trabajos correctos.<br>
+      <span>Sin vueltas.</span>
+    </h1>
+
+    <p>
+      Contanos qué hacés, dónde trabajás y qué tipo de oportunidades
+      querés recibir. Sin Vueltas utilizará esas preferencias para
+      conectarte con solicitudes compatibles.
+    </p>
+
+    <div class="founder-badge">
+      <span class="founder-dot"></span>
+      Profesionales fundadores · acceso gratuito
+    </div>
+
+  </section>
+
+
+  <div class="layout" id="registration-layout">
+
+    <form class="form-card" id="professional-form">
+
+      <section class="section">
+
+        <div class="section-number">01 · TU CUENTA</div>
+
+        <h2>Empecemos por vos</h2>
+
+        <p class="section-description">
+          Creá tu cuenta para formar parte de Sin Vueltas.
+        </p>
+
+        <div class="grid-2">
+
+          <div class="field">
+            <label class="field-label" for="nombre">
+              Nombre y apellido
+            </label>
+
+            <input
+              id="nombre"
+              type="text"
+              required
+              maxlength="80"
+              placeholder="Ej: Carlos Gómez"
+            >
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="whatsapp">
+              WhatsApp
+            </label>
+
+            <input
+              id="whatsapp"
+              type="tel"
+              required
+              maxlength="25"
+              placeholder="Ej: 3484 123456"
+            >
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="email">
+              Email
+            </label>
+
+            <input
+              id="email"
+              type="email"
+              required
+              autocomplete="email"
+              placeholder="nombre@email.com"
+            >
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="password">
+              Contraseña
+            </label>
+
+            <input
+              id="password"
+              type="password"
+              required
+              minlength="8"
+              autocomplete="new-password"
+              placeholder="Mínimo 8 caracteres"
+            >
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <section class="section">
+
+        <div class="section-number">02 · TU TRABAJO</div>
+
+        <h2>¿A qué te dedicás?</h2>
+
+        <p class="section-description">
+          Esto será la base para decidir qué oportunidades podemos enviarte.
+        </p>
+
+        <div class="grid-2">
+
+          <div class="field">
+
+            <label class="field-label" for="oficio">
+              Oficio principal
+            </label>
+
+            <select id="oficio" required>
+              <option value="">Elegí tu oficio</option>
+              <option value="Electricista">Electricista</option>
+              <option value="Plomero">Plomero</option>
+              <option value="Aire acondicionado">Aire acondicionado</option>
+              <option value="Herrero">Herrero</option>
+              <option value="Pintor">Pintor</option>
+              <option value="Jardinero">Jardinero</option>
+              <option value="Seguridad electrónica">Seguridad electrónica</option>
+              <option value="Reparaciones del hogar">Reparaciones del hogar</option>
+              <option value="Otro">Otro</option>
+            </select>
+
+          </div>
+
+
+          <div class="field">
+
+            <label class="field-label" for="localidad">
+              Localidad principal
+            </label>
+
+            <select id="localidad" required>
+              <option value="">Elegí tu localidad</option>
+              <option value="Escobar">Escobar</option>
+              <option value="Belén de Escobar">Belén de Escobar</option>
+              <option value="Matheu">Matheu</option>
+              <option value="Ingeniero Maschwitz">Ingeniero Maschwitz</option>
+              <option value="Garín">Garín</option>
+              <option value="Maquinista Savio">Maquinista Savio</option>
+              <option value="Pilar">Pilar</option>
+              <option value="Campana">Campana</option>
+              <option value="Zárate">Zárate</option>
+              <option value="Otra">Otra</option>
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <div class="field">
+
+          <label class="field-label" for="descripcion">
+            Contanos brevemente qué trabajos realizás
+          </label>
+
+          <textarea
+            id="descripcion"
+            maxlength="500"
+            placeholder="Ej: instalaciones domiciliarias, tableros, reparaciones, mantenimiento..."
+          ></textarea>
+
+        </div>
+
+
+        <div class="field">
+
+          <label class="field-label">
+            Especialidades
+          </label>
+
+          <div class="checks">
+
+            <div class="check">
+              <input type="checkbox" id="esp-instalaciones"
+                     value="instalaciones" name="especialidades">
+
+              <label for="esp-instalaciones">
+                <span class="checkmark">✓</span>
+                Instalaciones
+              </label>
+            </div>
+
+            <div class="check">
+              <input type="checkbox" id="esp-reparaciones"
+                     value="reparaciones" name="especialidades">
+
+              <label for="esp-reparaciones">
+                <span class="checkmark">✓</span>
+                Reparaciones
+              </label>
+            </div>
+
+            <div class="check">
+              <input type="checkbox" id="esp-mantenimiento"
+                     value="mantenimiento" name="especialidades">
+
+              <label for="esp-mantenimiento">
+                <span class="checkmark">✓</span>
+                Mantenimiento
+              </label>
+            </div>
+
+            <div class="check">
+              <input type="checkbox" id="esp-urgencias"
+                     value="urgencias" name="especialidades">
+
+              <label for="esp-urgencias">
+                <span class="checkmark">✓</span>
+                Urgencias
+              </label>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <section class="section">
+
+        <div class="section-number">03 · TUS PREFERENCIAS</div>
+
+        <h2>¿Qué oportunidades querés recibir?</h2>
+
+        <p class="section-description">
+          Estas preferencias serán utilizadas por el sistema de matching.
+        </p>
+
+
+        <div class="field">
+
+          <label class="field-label">
+            Radio máximo de trabajo
+          </label>
+
+          <div class="range-row">
+
+            <input
+              type="range"
+              id="radio"
+              min="5"
+              max="50"
+              step="5"
+              value="10"
+            >
+
+            <div class="range-value">
+              <span id="radio-value">10</span> km
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="field">
+
+          <label class="field-label">
+            Tipo de trabajos
+          </label>
+
+          <div class="checks">
+
+            <div class="check">
+              <input type="checkbox" id="domicilios" checked>
+
+              <label for="domicilios">
+                <span class="checkmark">✓</span>
+                Domicilios
+              </label>
+            </div>
+
+            <div class="check">
+              <input type="checkbox" id="comercios" checked>
+
+              <label for="comercios">
+                <span class="checkmark">✓</span>
+                Comercios
+              </label>
+            </div>
+
+            <div class="check">
+              <input type="checkbox" id="obras">
+
+              <label for="obras">
+                <span class="checkmark">✓</span>
+                Obras
+              </label>
+            </div>
+
+            <div class="check">
+              <input type="checkbox" id="urgencias" checked>
+
+              <label for="urgencias">
+                <span class="checkmark">✓</span>
+                Avisarme de urgencias
+              </label>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <button
+        type="submit"
+        class="submit-button"
+        id="submit-button"
+      >
+        CREAR MI PERFIL GRATIS
+      </button>
+
+      <div
+        id="form-message"
+        class="message"
+        aria-live="polite"
+      ></div>
+
+    </form>
+
+
+    <aside class="side-card">
+
+      <h3>¿Qué pasa después?</h3>
+
+      <ul class="steps">
+
+        <li>
+          <div class="step-number">01</div>
+          <div class="step-text">
+            <strong>Creás tu perfil</strong>
+            <span>Nos indicás tu oficio, zona y preferencias.</span>
+          </div>
+        </li>
+
+        <li>
+          <div class="step-number">02</div>
+          <div class="step-text">
+            <strong>Sin Vueltas hace el match</strong>
+            <span>Buscamos solicitudes compatibles con tu perfil.</span>
+          </div>
+        </li>
+
+        <li>
+          <div class="step-number">03</div>
+          <div class="step-text">
+            <strong>Recibís la oportunidad</strong>
+            <span>Vos decidís si querés pasar o si te interesa.</span>
+          </div>
+        </li>
+
+        <li>
+          <div class="step-number">04</div>
+          <div class="step-text">
+            <strong>Contactás al cliente</strong>
+            <span>Si te interesa, continuás la conversación por WhatsApp.</span>
+          </div>
+        </li>
+
+      </ul>
+
+      <div class="free-box">
+        <strong>Beta fundadores · GRATIS</strong>
+        <p>
+          Durante esta etapa inicial no necesitás comprar créditos
+          para recibir oportunidades ni indicar que te interesa un trabajo.
+        </p>
+      </div>
+
+    </aside>
+
+  </div>
+
+
+  <section class="form-card success-panel" id="success-panel">
+
+    <div class="success-icon">✓</div>
+
+    <h2>¡Ya sos parte de Sin Vueltas!</h2>
+
+    <p>
+      Tu cuenta fue confirmada y tu perfil profesional quedó registrado.
+      A partir de ahora podremos vincularte con oportunidades compatibles
+      con tu oficio, zona y preferencias.
+    </p>
+
+    <a href="index.html" class="home-button">
+      VOLVER A SIN VUELTAS
+    </a>
+
+  </section>
+
+</main>
+
+
+<footer>
+  SIN VUELTAS · TE CONECTA CON LA SOLUCIÓN
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+  // ============================================================
+  // SIN VUELTAS — REGISTRO PROFESIONAL V2
+  // ============================================================
+
+
+  // ============================================================
+  // PEGÁ ACÁ LAS DOS LÍNEAS QUE GUARDASTE.
+  // REEMPLAZÁ SOLO LOS TEXTOS ENTRE COMILLAS.
+  // ============================================================
+
+  const SUPABASE_URL = "https://ewjpqmjheohnzzybpshk.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_wDCAqHFH7FcU0Jl6SlF9HQ_Pws13cKK";
+
+
+
+  const supabaseClient =
+    supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+
+  const STORAGE_KEY =
+    "sin_vueltas_registro_profesional";
+
+
+  const form =
+    document.getElementById("professional-form");
+
+  const submitButton =
+    document.getElementById("submit-button");
+
+  const message =
+    document.getElementById("form-message");
+
+  const radio =
+    document.getElementById("radio");
+
+  const radioValue =
+    document.getElementById("radio-value");
+
+  const registrationLayout =
+    document.getElementById("registration-layout");
+
+  const successPanel =
+    document.getElementById("success-panel");
+
+  const intro =
+    document.getElementById("intro");
+
+
+  radio.addEventListener("input", () => {
+    radioValue.textContent = radio.value;
+  });
+
+
+  function mostrarMensaje(texto, tipo) {
+    message.textContent = texto;
+    message.className = "message " + tipo;
+  }
+
+
+  function obtenerDatosFormulario() {
+
+    return {
+
+      nombre:
+        document.getElementById("nombre").value.trim(),
+
+      whatsapp:
+        document.getElementById("whatsapp").value.trim(),
+
+      email:
+        document.getElementById("email").value.trim(),
+
+      oficio:
+        document.getElementById("oficio").value,
+
+      localidad:
+        document.getElementById("localidad").value,
+
+      descripcion:
+        document.getElementById("descripcion").value.trim(),
+
+      radio_km:
+        Number(document.getElementById("radio").value),
+
+      especialidades:
+        Array.from(
+          document.querySelectorAll(
+            'input[name="especialidades"]:checked'
+          )
+        ).map(item => item.value),
+
+      acepta_domicilios:
+        document.getElementById("domicilios").checked,
+
+      acepta_comercios:
+        document.getElementById("comercios").checked,
+
+      acepta_obras:
+        document.getElementById("obras").checked,
+
+      acepta_urgencias:
+        document.getElementById("urgencias").checked
+
+    };
+
+  }
+
+
+  function guardarRegistroPendiente(datos) {
+
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(datos)
+    );
+
+  }
+
+
+  function leerRegistroPendiente() {
+
+    const guardado =
+      localStorage.getItem(STORAGE_KEY);
+
+    if (!guardado) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(guardado);
+    } catch {
+      return null;
+    }
+
+  }
+
+
+  function borrarRegistroPendiente() {
+    localStorage.removeItem(STORAGE_KEY);
+  }
+
+
+  function mostrarPerfilCreado() {
+
+    registrationLayout.style.display = "none";
+    intro.style.display = "none";
+
+    successPanel.classList.add("visible");
+
+  }
+
+
+  async function completarPerfilSiCorresponde(session) {
+
+    if (!session || !session.user) {
+      return;
+    }
+
+
+    const datos =
+      leerRegistroPendiente();
+
+
+    if (!datos) {
+      return;
+    }
+
+
+    mostrarMensaje(
+      "Email confirmado. Estamos terminando de crear tu perfil profesional...",
+      "success"
+    );
+
+
+    const {
+      data,
+      error
+    } = await supabaseClient.rpc(
+      "completar_alta_profesional",
+      {
+
+        p_nombre:
+          datos.nombre,
+
+        p_whatsapp:
+          datos.whatsapp,
+
+        p_oficio:
+          datos.oficio,
+
+        p_localidad:
+          datos.localidad,
+
+        p_descripcion:
+          datos.descripcion || "",
+
+        p_radio_km:
+          datos.radio_km,
+
+        p_especialidades:
+          datos.especialidades || [],
+
+        p_acepta_domicilios:
+          datos.acepta_domicilios,
+
+        p_acepta_comercios:
+          datos.acepta_comercios,
+
+        p_acepta_obras:
+          datos.acepta_obras,
+
+        p_acepta_urgencias:
+          datos.acepta_urgencias
+
+      }
+    );
+
+
+    if (error) {
+
+      console.error(
+        "Error completando perfil:",
+        error
+      );
+
+      mostrarMensaje(
+        "Tu email fue confirmado, pero no pudimos terminar de crear el perfil. No vuelvas a registrarte. Intentá recargar esta página.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    console.log(
+      "Perfil profesional creado:",
+      data
+    );
+
+
+    borrarRegistroPendiente();
+
+    mostrarPerfilCreado();
+
+  }
+
+
+  // ============================================================
+  // REGISTRO INICIAL
+  // ============================================================
+
+  form.addEventListener(
+    "submit",
+    async (event) => {
+
+      event.preventDefault();
+
+
+      message.className = "message";
+      message.textContent = "";
+
+
+      const password =
+        document.getElementById("password").value;
+
+
+      const datos =
+        obtenerDatosFormulario();
+
+
+      if (
+        !datos.nombre ||
+        !datos.whatsapp ||
+        !datos.email ||
+        !password ||
+        !datos.oficio ||
+        !datos.localidad
+      ) {
+
+        mostrarMensaje(
+          "Completá los campos obligatorios antes de continuar.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      guardarRegistroPendiente(datos);
+
+
+      submitButton.disabled = true;
+
+      submitButton.textContent =
+        "CREANDO TU CUENTA...";
+
+
+      try {
+
+        const {
+          data,
+          error
+        } = await supabaseClient.auth.signUp({
+
+          email:
+            datos.email,
+
+          password:
+            password,
+
+          options: {
+
+            emailRedirectTo:
+              window.location.origin +
+              "/registro-profesional.html",
+
+            data: {
+              tipo_usuario: "profesional",
+              nombre: datos.nombre
+            }
+
+          }
+
+        });
+
+
+        if (error) {
+          throw error;
+        }
+
+
+        if (!data.user) {
+
+          throw new Error(
+            "No pudimos crear la cuenta."
+          );
+
+        }
+
+
+        mostrarMensaje(
+          "Cuenta creada. Te enviamos un correo de confirmación. Abrí ese email y tocá el enlace para terminar de activar tu perfil profesional.",
+          "success"
+        );
+
+
+        submitButton.textContent =
+          "REVISÁ TU EMAIL";
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        mostrarMensaje(
+          error.message ||
+          "Ocurrió un problema al crear la cuenta.",
+          "error"
+        );
+
+
+        submitButton.disabled = false;
+
+        submitButton.textContent =
+          "CREAR MI PERFIL GRATIS";
+
+      }
+
+    }
+  );
+
+
+  // ============================================================
+  // CUANDO SUPABASE DEVUELVE AL USUARIO DESPUÉS DEL EMAIL
+  // ============================================================
+
+  supabaseClient.auth.onAuthStateChange(
+    async (event, session) => {
+
+      if (
+        event === "SIGNED_IN" ||
+        event === "INITIAL_SESSION"
+      ) {
+
+        await completarPerfilSiCorresponde(
+          session
+        );
+
+      }
+
+    }
+  );
+
+
+  // Comprobación adicional por si la sesión ya está cargada.
+
+  async function comprobarSesionInicial() {
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.auth.getSession();
+
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+
+    if (data.session) {
+
+      await completarPerfilSiCorresponde(
+        data.session
+      );
+
+    }
+
+  }
+
+
+  comprobarSesionInicial();
+
+</script>
+
+</body>
+</html>

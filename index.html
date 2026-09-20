@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Sin Vueltas conecta clientes con profesionales disponibles cerca suyo."
+  >
+
+  <title>Sin Vueltas | Profesionales cerca tuyo</title>
+
+  <!-- TIPOGRAFÍA -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- LEAFLET -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  >
+
+  <!-- ESTILOS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- ===================================================== -->
+  <!-- HEADER -->
+  <!-- ===================================================== -->
+
+  <header class="main-header">
+
+    <div class="header-inner">
+
+      <!-- LOGO -->
+      <a href="#" class="brand">
+
+        <div class="brand-symbol" aria-hidden="true">
+
+          <svg
+            viewBox="0 0 120 72"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient
+                id="logoGradient"
+                x1="0"
+                y1="0"
+                x2="1"
+                y2="1"
+              >
+                <stop offset="0%" stop-color="#13f1c3"/>
+                <stop offset="100%" stop-color="#06a981"/>
+              </linearGradient>
+            </defs>
+
+            <path
+              d="M7 55
+                 C31 41, 55 28, 91 22
+                 C67 31, 49 41, 34 54
+                 C55 41, 78 37, 106 39
+                 C81 42, 59 49, 39 64
+                 C29 69, 18 66, 7 55Z"
+              fill="url(#logoGradient)"
+            />
+
+            <path
+              d="M13 48
+                 C37 32, 59 22, 92 15"
+              fill="none"
+              stroke="#62ffe2"
+              stroke-width="3"
+              stroke-linecap="round"
+            />
+
+            <circle
+              cx="103"
+              cy="11"
+              r="7"
+              fill="#16edbd"
+            />
+
+            <circle
+              cx="103"
+              cy="11"
+              r="3"
+              fill="#d9fff7"
+            />
+          </svg>
+
+        </div>
+
+        <div class="brand-text">
+          <div class="brand-name">
+            <span>SIN</span>
+            <strong>VUELTAS</strong>
+          </div>
+
+          <div class="brand-tagline">
+            TE CONECTA CON LA SOLUCIÓN
+          </div>
+        </div>
+
+      </a>
+
+
+      <!-- NAVEGACIÓN -->
+      <nav class="main-nav">
+
+        <a href="#" class="nav-active">
+          Inicio
+        </a>
+
+        <a href="#como-funciona">
+          Cómo funciona
+        </a>
+
+        <a href="#profesionales">
+          Para profesionales
+        </a>
+
+        <a href="#categorias">
+          Servicios
+        </a>
+
+      </nav>
+
+
+      <!-- ACCIONES HEADER -->
+      <div class="header-actions">
+
+        <button class="location-button">
+          <span>●</span>
+          Escobar
+        </button>
+
+        <button class="login-button">
+          Iniciar sesión
+        </button>
+
+        <button class="professional-button">
+          Soy profesional
+        </button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- ===================================================== -->
+  <!-- HERO -->
+  <!-- ===================================================== -->
+
+  <main>
+
+    <section class="hero">
+
+      <div class="hero-glow hero-glow-one"></div>
+      <div class="hero-glow hero-glow-two"></div>
+
+      <div class="hero-inner">
+
+        <!-- IZQUIERDA -->
+        <div class="hero-copy">
+
+          <div class="eyebrow">
+            TU BARRIO · TUS SOLUCIONES
+          </div>
+
+          <h1>
+            Encontrá profesionales
+            <span>de confianza.</span>
+          </h1>
+
+          <p class="hero-description">
+            Servicios para tu hogar y negocio, cerca tuyo.
+            Encontrá personas disponibles cuando las necesitás.
+          </p>
+
+
+          <!-- BUSCADOR -->
+
+          <div class="search-panel">
+
+            <div class="search-tabs">
+
+              <button class="search-tab active">
+                ⚡ Ahora
+              </button>
+
+              <button class="search-tab">
+                ▣ Programar
+              </button>
+
+              <button class="search-tab">
+                ▤ Cotizar
+              </button>
+
+            </div>
+
+
+            <div class="search-fields">
+
+              <div class="search-field">
+                <span class="field-icon">⌕</span>
+
+                <div>
+                  <small>Servicio</small>
+                  <strong>¿Qué necesitás?</strong>
+                </div>
+              </div>
+
+
+              <div class="search-field">
+                <span class="field-icon">●</span>
+
+                <div>
+                  <small>Ubicación</small>
+                  <strong>Escobar</strong>
+                </div>
+              </div>
+
+
+              <button class="search-main-button">
+                Encontrar profesional
+                <span>→</span>
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <!-- BENEFICIOS -->
+
+          <div class="hero-benefits">
+
+            <div class="benefit">
+              <span class="benefit-icon">✓</span>
+              <div>
+                <strong>Profesionales</strong>
+                <small>Perfiles y reputación</small>
+              </div>
+            </div>
+
+            <div class="benefit">
+              <span class="benefit-icon">⌖</span>
+              <div>
+                <strong>Cerca tuyo</strong>
+                <small>Buscá por zona</small>
+              </div>
+            </div>
+
+            <div class="benefit">
+              <span class="benefit-icon">⚡</span>
+              <div>
+                <strong>Sin vueltas</strong>
+                <small>Contacto rápido</small>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- DERECHA -->
+        <div class="hero-live">
+
+          <div class="live-header">
+
+            <div>
+              <span class="live-dot"></span>
+              <strong>En tiempo real</strong>
+            </div>
+
+            <span class="live-location">
+              Escobar
+            </span>
+
+          </div>
+
+
+          <!-- CONTADOR REAL SUPABASE -->
+
+          <div class="availability-card">
+
+            <div class="availability-icon">
+              ⚡
+            </div>
+
+            <div>
+              <small>
+                PROFESIONALES DISPONIBLES
+              </small>
+
+              <strong id="availability-text">
+                Cargando...
+              </strong>
+            </div>
+
+          </div>
+
+
+          <!-- MAPA -->
+
+          <div class="map-shell">
+
+            <div class="map-top-label">
+              <span class="live-dot"></span>
+              Profesionales activos en tu zona
+            </div>
+
+            <div id="map"></div>
+
+            <div class="map-bottom-badge">
+              <span class="pulse-dot"></span>
+
+              <div>
+                <strong>Escobar</strong>
+                <small>Actividad en tiempo real</small>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ===================================================== -->
+    <!-- FRANJA MARCA -->
+    <!-- ===================================================== -->
+
+    <section class="brand-strip">
+
+      <div class="brand-strip-inner">
+
+        <div>
+          <span>01</span>
+          <strong>Buscá</strong>
+          <small>El servicio que necesitás</small>
+        </div>
+
+        <div class="brand-strip-arrow">
+          →
+        </div>
+
+        <div>
+          <span>02</span>
+          <strong>Encontrá</strong>
+          <small>Profesionales en tu zona</small>
+        </div>
+
+        <div class="brand-strip-arrow">
+          →
+        </div>
+
+        <div>
+          <span>03</span>
+          <strong>Resolvé</strong>
+          <small>Rápido y sin vueltas</small>
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ===================================================== -->
+    <!-- CATEGORÍAS -->
+    <!-- ===================================================== -->
+
+    <section
+      class="section categories-section"
+      id="categorias"
+    >
+
+      <div class="section-heading">
+
+        <div>
+          <span class="section-kicker">
+            EXPLORÁ POR CATEGORÍA
+          </span>
+
+          <h2>
+            ¿Qué necesitás hoy?
+          </h2>
+        </div>
+
+        <button class="link-button">
+          Ver todas
+          <span>→</span>
+        </button>
+
+      </div>
+
+
+      <div class="categories-grid">
+
+
+        <!-- ELECTRICISTAS -->
+
+        <article class="category-card">
+
+          <div class="category-icon">
+            ⚡
+          </div>
+
+          <h3>Electricistas</h3>
+
+          <div class="category-counter">
+            <strong id="electricistas-count">
+              ...
+            </strong>
+
+            <span>disponibles</span>
+          </div>
+
+        </article>
+
+
+
+        <!-- PLOMEROS -->
+
+        <article class="category-card">
+
+          <div class="category-icon">
+            💧
+          </div>
+
+          <h3>Plomeros</h3>
+
+          <div class="category-counter">
+            <strong id="plomeros-count">
+              ...
+            </strong>
+
+            <span>disponibles</span>
+          </div>
+
+        </article>
+
+
+
+        <!-- AIRE -->
+
+        <article class="category-card">
+
+          <div class="category-icon">
+            ❄
+          </div>
+
+          <h3>Aire acondicionado</h3>
+
+          <div class="category-counter">
+            <strong id="aires-count">
+              ...
+            </strong>
+
+            <span>disponibles</span>
+          </div>
+
+        </article>
+
+
+
+        <!-- HERREROS -->
+
+        <article class="category-card">
+
+          <div class="category-icon">
+            🔧
+          </div>
+
+          <h3>Herrería</h3>
+
+          <div class="category-counter">
+            <strong id="herreros-count">
+              ...
+            </strong>
+
+            <span>disponibles</span>
+          </div>
+
+        </article>
+
+
+
+        <!-- PINTORES -->
+
+        <article class="category-card">
+
+          <div class="category-icon">
+            ▰
+          </div>
+
+          <h3>Pintores</h3>
+
+          <div class="category-counter">
+
+            <strong>—</strong>
+            <span>próximamente</span>
+
+          </div>
+
+        </article>
+
+
+
+        <!-- JARDINEROS -->
+
+        <article class="category-card">
+
+          <div class="category-icon">
+            ❧
+          </div>
+
+          <h3>Jardineros</h3>
+
+          <div class="category-counter">
+
+            <strong>—</strong>
+            <span>próximamente</span>
+
+          </div>
+
+        </article>
+
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ===================================================== -->
+    <!-- PROFESIONALES -->
+    <!-- ===================================================== -->
+
+    <section class="section professionals-section">
+
+      <div class="section-heading">
+
+        <div>
+
+          <span class="section-kicker">
+            PROFESIONALES CERCA TUYO
+          </span>
+
+          <h2>
+            Disponibles ahora
+          </h2>
+
+          <p>
+            Personas listas para ayudarte en tu zona.
+          </p>
+
+        </div>
+
+        <div class="realtime-small">
+
+          <span class="live-dot"></span>
+
+          Actualizando
+
+        </div>
+
+      </div>
+
+
+      <!-- ESTE CONTENEDOR LO SIGUE LLENANDO APP.JS -->
+
+      <div
+        id="professionals-container"
+        class="professionals-grid"
+      >
+
+        <div class="loading-card">
+          Buscando profesionales disponibles...
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ===================================================== -->
+    <!-- COMO FUNCIONA -->
+    <!-- ===================================================== -->
+
+    <section
+      class="how-section"
+      id="como-funciona"
+    >
+
+      <div class="how-inner">
+
+        <div class="how-copy">
+
+          <span class="section-kicker">
+            SIMPLE DESDE EL PRIMER MOMENTO
+          </span>
+
+          <h2>
+            Menos vueltas.<br>
+            Más soluciones.
+          </h2>
+
+          <p>
+            Sin Vueltas conecta la necesidad de una persona
+            con profesionales disponibles en su zona.
+          </p>
+
+        </div>
+
+
+        <div class="how-steps">
+
+          <article>
+
+            <span>01</span>
+
+            <div class="how-icon">
+              ⌕
+            </div>
+
+            <h3>Contanos qué necesitás</h3>
+
+            <p>
+              Elegí el servicio y tu ubicación.
+            </p>
+
+          </article>
+
+
+          <article>
+
+            <span>02</span>
+
+            <div class="how-icon">
+              ⌖
+            </div>
+
+            <h3>Encontrá quién está cerca</h3>
+
+            <p>
+              Consultá profesionales disponibles en tu zona.
+            </p>
+
+          </article>
+
+
+          <article>
+
+            <span>03</span>
+
+            <div class="how-icon">
+              ✓
+            </div>
+
+            <h3>Elegí y resolvé</h3>
+
+            <p>
+              Revisá el perfil y avanzá con tu solicitud.
+            </p>
+
+          </article>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ===================================================== -->
+    <!-- PARA PROFESIONALES -->
+    <!-- ===================================================== -->
+
+    <section
+      class="professional-cta"
+      id="profesionales"
+    >
+
+      <div class="cta-glow"></div>
+
+
+      <div class="professional-cta-inner">
+
+        <div class="cta-brand-symbol">
+
+          <svg
+            viewBox="0 0 120 72"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+
+            <path
+              d="M7 55
+                 C31 41,55 28,91 22
+                 C67 31,49 41,34 54
+                 C55 41,78 37,106 39
+                 C81 42,59 49,39 64
+                 C29 69,18 66,7 55Z"
+              fill="#14e7b8"
+            />
+
+            <path
+              d="M13 48 C37 32,59 22,92 15"
+              fill="none"
+              stroke="#74ffe5"
+              stroke-width="3"
+              stroke-linecap="round"
+            />
+
+            <circle
+              cx="103"
+              cy="11"
+              r="7"
+              fill="#14e7b8"
+            />
+
+          </svg>
+
+        </div>
+
+
+        <div class="cta-copy">
+
+          <span class="section-kicker">
+            PARA PROFESIONALES
+          </span>
+
+          <h2>
+            Hacé crecer tu trabajo
+            <span>con Sin Vueltas.</span>
+          </h2>
+
+          <p>
+            Creá tu perfil, mostrá tus servicios,
+            elegí tu zona de trabajo y recibí solicitudes
+            de clientes.
+          </p>
+
+
+          <div class="cta-benefits">
+
+            <span>✓ Tu perfil profesional</span>
+            <span>✓ Tu zona</span>
+            <span>✓ Tu disponibilidad</span>
+            <span>✓ Tu reputación</span>
+
+          </div>
+
+
+          <button class="cta-button">
+            Crear mi perfil profesional
+            <span>→</span>
+          </button>
+
+        </div>
+
+
+        <div class="cta-dashboard">
+
+          <div class="dashboard-top">
+
+            <span class="live-dot"></span>
+            TU ACTIVIDAD
+
+          </div>
+
+          <div class="dashboard-card">
+
+            <small>Perfil profesional</small>
+
+            <strong>
+              Tu trabajo.<br>
+              Más visible.
+            </strong>
+
+          </div>
+
+          <div class="dashboard-row">
+
+            <div>
+              <span>●</span>
+              Disponible
+            </div>
+
+            <div>
+              <span>⌖</span>
+              Tu zona
+            </div>
+
+          </div>
+
+          <div class="dashboard-row">
+
+            <div>
+              <span>★</span>
+              Reputación
+            </div>
+
+            <div>
+              <span>✓</span>
+              Trabajos
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ===================================================== -->
+    <!-- FOOTER CORPORATIVO -->
+    <!-- ===================================================== -->
+
+    <footer class="main-footer">
+
+      <!-- EFECTO CARRETERA / MOVIMIENTO -->
+
+      <div class="footer-road">
+
+        <span class="road-line road-line-one"></span>
+        <span class="road-line road-line-two"></span>
+        <span class="road-line road-line-three"></span>
+
+      </div>
+
+
+      <div class="footer-main">
+
+        <!-- LOGO FOOTER -->
+
+        <div class="footer-brand">
+
+          <div class="footer-logo">
+
+            <div class="footer-logo-symbol">
+
+              <svg
+                viewBox="0 0 120 72"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+
+                <path
+                  d="M7 55
+                     C31 41,55 28,91 22
+                     C67 31,49 41,34 54
+                     C55 41,78 37,106 39
+                     C81 42,59 49,39 64
+                     C29 69,18 66,7 55Z"
+                  fill="#13e7b7"
+                />
+
+                <path
+                  d="M13 48 C37 32,59 22,92 15"
+                  fill="none"
+                  stroke="#71ffe5"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                />
+
+                <circle
+                  cx="103"
+                  cy="11"
+                  r="7"
+                  fill="#13e7b7"
+                />
+
+              </svg>
+
+            </div>
+
+
+            <div>
+
+              <div class="footer-brand-name">
+                SIN <strong>VUELTAS</strong>
+              </div>
+
+              <small>
+                TE CONECTA CON LA SOLUCIÓN
+              </small>
+
+            </div>
+
+          </div>
+
+
+          <div class="footer-slogan">
+
+            Más que servicios,<br>
+            <strong>soluciones reales.</strong>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- PILARES -->
+
+        <div class="footer-values">
+
+          <div>
+            <span>⌂</span>
+            <strong>HOGAR</strong>
+          </div>
+
+          <div>
+            <span>🔧</span>
+            <strong>OFICIOS</strong>
+          </div>
+
+          <div>
+            <span>⌖</span>
+            <strong>CERCA TUYO</strong>
+          </div>
+
+          <div>
+            <span>✓</span>
+            <strong>CONFIANZA</strong>
+          </div>
+
+          <div>
+            <span>◎</span>
+            <strong>PERSONAS REALES</strong>
+          </div>
+
+          <div>
+            <span>▥</span>
+            <strong>RESULTADOS</strong>
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="footer-bottom">
+
+        <span>
+          © 2026 Sin Vueltas. Todos los derechos reservados.
+        </span>
+
+        <div>
+          <a href="#">Términos</a>
+          <a href="#">Privacidad</a>
+          <a href="#">Contacto</a>
+        </div>
+
+      </div>
+
+    </footer>
+
+  </main>
+
+
+
+  <!-- ===================================================== -->
+  <!-- LIBRERÍAS -->
+  <!-- ===================================================== -->
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+  ></script>
+
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  ></script>
+
+
+  <!-- ===================================================== -->
+  <!-- TU APP.JS ACTUAL -->
+  <!-- ===================================================== -->
+
+  <script src="app.js"></script>
+
+
+
+  <!-- ===================================================== -->
+  <!-- MAPA -->
+  <!-- ===================================================== -->
+
+  <script>
+
+    const mapa = L.map(
+      "map",
+      {
+        zoomControl: true,
+        scrollWheelZoom: false
+      }
+    ).setView(
+      [-34.3484, -58.7927],
+      13
+    );
+
+
+    L.tileLayer(
+      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      {
+        maxZoom: 19,
+        attribution: "&copy; OpenStreetMap"
+      }
+    ).addTo(mapa);
+
+
+
+    const professionalIcon = L.divIcon({
+
+      className: "custom-marker-wrapper",
+
+      html: `
+        <div class="custom-map-marker">
+          <span></span>
+        </div>
+      `,
+
+      iconSize: [30, 30],
+
+      iconAnchor: [15, 15]
+
+    });
+
+
+
+    const demoProfessionals = [
+
+      {
+        nombre: "Carlos Prueba",
+        oficio: "Electricista",
+        lat: -34.3484,
+        lng: -58.7927
+      },
+
+      {
+        nombre: "Profesional",
+        oficio: "Plomería",
+        lat: -34.342,
+        lng: -58.780
+      },
+
+      {
+        nombre: "Profesional",
+        oficio: "Aire acondicionado",
+        lat: -34.365,
+        lng: -58.755
+      },
+
+      {
+        nombre: "Profesional",
+        oficio: "Herrería",
+        lat: -34.335,
+        lng: -58.815
+      }
+
+    ];
+
+
+
+    demoProfessionals.forEach(
+      profesional => {
+
+        L.marker(
+          [
+            profesional.lat,
+            profesional.lng
+          ],
+          {
+            icon: professionalIcon
+          }
+        )
+        .addTo(mapa)
+        .bindPopup(
+          `
+            <div class="map-popup">
+              <strong>
+                ${profesional.nombre}
+              </strong>
+
+              <span>
+                ${profesional.oficio}
+              </span>
+
+              <small>
+                Disponible ahora
+              </small>
+            </div>
+          `
+        );
+
+      }
+    );
+
+
+
+    L.circle(
+      [-34.3484, -58.7927],
+      {
+        radius: 4300,
+        color: "#14e7b7",
+        weight: 1,
+        fillColor: "#14e7b7",
+        fillOpacity: 0.08
+      }
+    ).addTo(mapa);
+
+
+  </script>
+
+</body>
+</html>
