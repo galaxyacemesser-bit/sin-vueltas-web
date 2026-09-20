@@ -975,26 +975,17 @@
 <script>
 
   // ============================================================
-  // SIN VUELTAS — REGISTRO PROFESIONAL V2
+  // SIN VUELTAS — REGISTRO PROFESIONAL V3
+  // MULTIDISPOSITIVO
   // ============================================================
 
+  // PEGÁ ACÁ LAS DOS LÍNEAS QUE GUARDASTE
 
-  // ============================================================
-  // PEGÁ ACÁ LAS DOS LÍNEAS QUE GUARDASTE.
-  // REEMPLAZÁ SOLO LOS TEXTOS ENTRE COMILLAS.
-  // ============================================================
-
-  const SUPABASE_URL = "https://ewjpqmjheohnzzybpshk.supabase.co";
-  const SUPABASE_KEY = "sb_publishable_wDCAqHFH7FcU0Jl6SlF9HQ_Pws13cKK";
-
-
+  const SUPABASE_URL = "PEGAR_TU_URL_REAL";
+  const SUPABASE_KEY = "PEGAR_TU_PUBLISHABLE_KEY_REAL";
 
   const supabaseClient =
     supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-
-  const STORAGE_KEY =
-    "sin_vueltas_registro_profesional";
 
 
   const form =
@@ -1022,16 +1013,44 @@
     document.getElementById("intro");
 
 
+  let completandoPerfil = false;
+
+
+  // ============================================================
+  // INTERFAZ
+  // ============================================================
+
   radio.addEventListener("input", () => {
     radioValue.textContent = radio.value;
   });
 
 
   function mostrarMensaje(texto, tipo) {
+
     message.textContent = texto;
     message.className = "message " + tipo;
+
   }
 
+
+  function mostrarPerfilCreado() {
+
+    registrationLayout.style.display = "none";
+    intro.style.display = "none";
+
+    successPanel.classList.add("visible");
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+  }
+
+
+  // ============================================================
+  // DATOS DEL FORMULARIO
+  // ============================================================
 
   function obtenerDatosFormulario() {
 
@@ -1056,7 +1075,9 @@
         document.getElementById("descripcion").value.trim(),
 
       radio_km:
-        Number(document.getElementById("radio").value),
+        Number(
+          document.getElementById("radio").value
+        ),
 
       especialidades:
         Array.from(
@@ -1082,124 +1103,58 @@
   }
 
 
-  function guardarRegistroPendiente(datos) {
-
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify(datos)
-    );
-
-  }
-
-
-  function leerRegistroPendiente() {
-
-    const guardado =
-      localStorage.getItem(STORAGE_KEY);
-
-    if (!guardado) {
-      return null;
-    }
-
-    try {
-      return JSON.parse(guardado);
-    } catch {
-      return null;
-    }
-
-  }
-
-
-  function borrarRegistroPendiente() {
-    localStorage.removeItem(STORAGE_KEY);
-  }
-
-
-  function mostrarPerfilCreado() {
-
-    registrationLayout.style.display = "none";
-    intro.style.display = "none";
-
-    successPanel.classList.add("visible");
-
-  }
-
+  // ============================================================
+  // COMPLETAR PERFIL DESPUÉS DE CONFIRMAR EMAIL
+  //
+  // IMPORTANTE:
+  // YA NO DEPENDE DE LOCALSTORAGE.
+  //
+  // LOS DATOS VIAJAN EN user_metadata DE SUPABASE AUTH.
+  // ============================================================
 
   async function completarPerfilSiCorresponde(session) {
 
-    if (!session || !session.user) {
+    if (
+      completandoPerfil ||
+      !session ||
+      !session.user
+    ) {
       return;
     }
 
+
+    const user = session.user;
 
     const datos =
-      leerRegistroPendiente();
+      user.user_metadata || {};
 
 
-    if (!datos) {
+    // Esta cuenta no corresponde al nuevo flujo profesional V3.
+
+    if (
+      datos.tipo_usuario !== "profesional" ||
+      !datos.registro_profesional_v3
+    ) {
       return;
     }
 
 
-    mostrarMensaje(
-      "Email confirmado. Estamos terminando de crear tu perfil profesional...",
-      "success"
-    );
+    // Comprobamos que existan los datos esenciales.
 
-
-    const {
-      data,
-      error
-    } = await supabaseClient.rpc(
-      "completar_alta_profesional",
-      {
-
-        p_nombre:
-          datos.nombre,
-
-        p_whatsapp:
-          datos.whatsapp,
-
-        p_oficio:
-          datos.oficio,
-
-        p_localidad:
-          datos.localidad,
-
-        p_descripcion:
-          datos.descripcion || "",
-
-        p_radio_km:
-          datos.radio_km,
-
-        p_especialidades:
-          datos.especialidades || [],
-
-        p_acepta_domicilios:
-          datos.acepta_domicilios,
-
-        p_acepta_comercios:
-          datos.acepta_comercios,
-
-        p_acepta_obras:
-          datos.acepta_obras,
-
-        p_acepta_urgencias:
-          datos.acepta_urgencias
-
-      }
-    );
-
-
-    if (error) {
+    if (
+      !datos.nombre ||
+      !datos.whatsapp ||
+      !datos.oficio ||
+      !datos.localidad
+    ) {
 
       console.error(
-        "Error completando perfil:",
-        error
+        "Metadata profesional incompleta:",
+        datos
       );
 
       mostrarMensaje(
-        "Tu email fue confirmado, pero no pudimos terminar de crear el perfil. No vuelvas a registrarte. Intentá recargar esta página.",
+        "Tu cuenta fue confirmada, pero faltan datos del perfil profesional.",
         "error"
       );
 
@@ -1208,21 +1163,102 @@
     }
 
 
-    console.log(
-      "Perfil profesional creado:",
-      data
+    completandoPerfil = true;
+
+
+    mostrarMensaje(
+      "Email confirmado. Estamos activando tu perfil profesional...",
+      "success"
     );
 
 
-    borrarRegistroPendiente();
+    try {
 
-    mostrarPerfilCreado();
+      const {
+        data,
+        error
+      } = await supabaseClient.rpc(
+        "completar_alta_profesional",
+        {
+
+          p_nombre:
+            datos.nombre,
+
+          p_whatsapp:
+            datos.whatsapp,
+
+          p_oficio:
+            datos.oficio,
+
+          p_localidad:
+            datos.localidad,
+
+          p_descripcion:
+            datos.descripcion || "",
+
+          p_radio_km:
+            Number(datos.radio_km) || 10,
+
+          p_especialidades:
+            Array.isArray(datos.especialidades)
+              ? datos.especialidades
+              : [],
+
+          p_acepta_domicilios:
+            datos.acepta_domicilios !== false,
+
+          p_acepta_comercios:
+            datos.acepta_comercios !== false,
+
+          p_acepta_obras:
+            datos.acepta_obras === true,
+
+          p_acepta_urgencias:
+            datos.acepta_urgencias !== false
+
+        }
+      );
+
+
+      if (error) {
+        throw error;
+      }
+
+
+      console.log(
+        "Perfil profesional activado. ID:",
+        data
+      );
+
+
+      mostrarPerfilCreado();
+
+
+    } catch (error) {
+
+      console.error(
+        "Error completando perfil profesional:",
+        error
+      );
+
+
+      mostrarMensaje(
+        "Tu email fue confirmado, pero hubo un problema al activar el perfil. No vuelvas a registrarte. Recargá esta página o contactanos.",
+        "error"
+      );
+
+
+    } finally {
+
+      completandoPerfil = false;
+
+    }
 
   }
 
 
   // ============================================================
-  // REGISTRO INICIAL
+  // CREAR CUENTA
   // ============================================================
 
   form.addEventListener(
@@ -1263,9 +1299,6 @@
       }
 
 
-      guardarRegistroPendiente(datos);
-
-
       submitButton.disabled = true;
 
       submitButton.textContent =
@@ -1292,8 +1325,54 @@
               "/registro-profesional.html",
 
             data: {
-              tipo_usuario: "profesional",
-              nombre: datos.nombre
+
+              // Identificación del flujo
+
+              tipo_usuario:
+                "profesional",
+
+              registro_profesional_v3:
+                true,
+
+
+              // Perfil
+
+              nombre:
+                datos.nombre,
+
+              whatsapp:
+                datos.whatsapp,
+
+              oficio:
+                datos.oficio,
+
+              localidad:
+                datos.localidad,
+
+              descripcion:
+                datos.descripcion,
+
+
+              // Matching
+
+              radio_km:
+                datos.radio_km,
+
+              especialidades:
+                datos.especialidades,
+
+              acepta_domicilios:
+                datos.acepta_domicilios,
+
+              acepta_comercios:
+                datos.acepta_comercios,
+
+              acepta_obras:
+                datos.acepta_obras,
+
+              acepta_urgencias:
+                datos.acepta_urgencias
+
             }
 
           }
@@ -1316,7 +1395,7 @@
 
 
         mostrarMensaje(
-          "Cuenta creada. Te enviamos un correo de confirmación. Abrí ese email y tocá el enlace para terminar de activar tu perfil profesional.",
+          "Cuenta creada. Te enviamos un correo de confirmación. Podés abrirlo desde este dispositivo o desde otro: tus datos ya quedaron guardados de forma segura para completar el perfil.",
           "success"
         );
 
@@ -1328,6 +1407,7 @@
       } catch (error) {
 
         console.error(error);
+
 
         mostrarMensaje(
           error.message ||
@@ -1348,7 +1428,7 @@
 
 
   // ============================================================
-  // CUANDO SUPABASE DEVUELVE AL USUARIO DESPUÉS DEL EMAIL
+  // RETORNO DESDE EL EMAIL DE CONFIRMACIÓN
   // ============================================================
 
   supabaseClient.auth.onAuthStateChange(
@@ -1369,7 +1449,7 @@
   );
 
 
-  // Comprobación adicional por si la sesión ya está cargada.
+  // Comprobación adicional si la sesión ya existe.
 
   async function comprobarSesionInicial() {
 
@@ -1381,8 +1461,14 @@
 
 
     if (error) {
-      console.error(error);
+
+      console.error(
+        "Error leyendo sesión:",
+        error
+      );
+
       return;
+
     }
 
 
