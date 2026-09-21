@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sin Vueltas | Iniciar sesión</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Montserrat,sans-serif;color:#f5f7fb;background:radial-gradient(circle at 70% 25%,rgba(0,190,255,.12),transparent 30%),radial-gradient(circle at 20% 75%,rgba(34,231,189,.09),transparent 28%),#050b14}
+header{min-height:88px;padding:12px 5%;display:flex;align-items:center;border-bottom:1px solid rgba(34,231,189,.15);background:rgba(4,10,18,.88)}
+.logo{width:200px;max-width:48vw;height:auto;display:block}
+main{min-height:calc(100vh - 88px);display:grid;place-items:center;padding:45px 20px}
+.wrap{width:min(980px,100%);display:grid;grid-template-columns:1.05fr .95fr;border:1px solid rgba(34,231,189,.18);border-radius:24px;overflow:hidden;background:rgba(8,18,31,.9);box-shadow:0 30px 80px rgba(0,0,0,.35)}
+.info{padding:54px;background:linear-gradient(145deg,rgba(14,38,57,.94),rgba(5,15,27,.94))}
+.kicker{color:#28e8bf;font-size:12px;font-weight:800;letter-spacing:.16em}
+h1{font-size:clamp(36px,5vw,58px);line-height:1.02;margin:14px 0 18px}h1 span{color:#28e8bf}
+.info p{color:#a8b5c4;line-height:1.7}.points{margin-top:30px;display:grid;gap:15px}.point{display:flex;gap:12px;align-items:center;color:#dce6ee;font-size:14px}.dot{width:9px;height:9px;border-radius:50%;background:#28e8bf;box-shadow:0 0 12px #28e8bf}
+.login{padding:54px 44px}.login h2{font-size:27px;margin:0 0 8px}.sub{color:#9dabbc;font-size:14px;line-height:1.5;margin-bottom:28px}
+label{display:block;color:#cdd7e1;font-size:13px;font-weight:700;margin:15px 0 7px}
+input{width:100%;height:50px;border-radius:11px;border:1px solid rgba(255,255,255,.13);background:#0c1929;color:white;padding:0 14px;font:inherit;outline:none}
+input:focus{border-color:#28e8bf;box-shadow:0 0 0 3px rgba(40,232,191,.08)}
+.submit{width:100%;height:52px;margin-top:22px;border:0;border-radius:12px;background:linear-gradient(90deg,#24e3ba,#68f6dc);color:#03231c;font-weight:900;font:inherit;cursor:pointer}
+.submit:disabled{opacity:.65;cursor:default}.message{min-height:24px;margin-top:14px;font-size:13px;line-height:1.45;color:#ffb9b9}
+.back{display:block;text-align:center;margin-top:22px;color:#91a2b5;text-decoration:none;font-size:13px}.back:hover{color:#28e8bf}
+@media(max-width:760px){.wrap{grid-template-columns:1fr}.info{padding:34px 28px}.login{padding:34px 28px}}
+</style>
+</head>
+<body>
+<header><a href="index.html"><img src="sin-vueltas-logo-variante-a.png" class="logo" alt="Sin Vueltas"></a></header>
+<main>
+<section class="wrap">
+<div class="info">
+<div class="kicker">PARA PROFESIONALES</div>
+<h1>Tu trabajo.<br><span>Sin vueltas.</span></h1>
+<p>Ingresá con la misma cuenta que usaste para crear tu perfil profesional. Vas a acceder solamente a las oportunidades compatibles con tu perfil.</p>
+<div class="points"><div class="point"><i class="dot"></i>Oportunidades según oficio y zona</div><div class="point"><i class="dot"></i>Datos del cliente protegidos</div><div class="point"><i class="dot"></i>ME INTERESA — GRATIS en Mark 1</div></div>
+</div>
+<div class="login">
+<h2>Iniciar sesión</h2>
+<p class="sub">Accedé a tu panel profesional de Sin Vueltas.</p>
+<form id="login-form">
+<label for="email">Correo electrónico</label>
+<input id="email" type="email" autocomplete="email" required placeholder="tu@email.com">
+<label for="password">Contraseña</label>
+<input id="password" type="password" autocomplete="current-password" required placeholder="Tu contraseña">
+<button id="submit" class="submit" type="submit">ENTRAR A MI PANEL →</button>
+<div id="message" class="message"></div>
+</form>
+<a class="back" href="index.html">← Volver a Sin Vueltas</a>
+</div>
+</section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="app.js"></script>
+<script>
+(async()=>{
+ const form=document.getElementById("login-form"),msg=document.getElementById("message"),btn=document.getElementById("submit");
+ const sb=(typeof supabaseClient!=="undefined")?supabaseClient:window.supabaseClient;
+ if(!sb){msg.textContent="No pudimos conectar con Sin Vueltas.";btn.disabled=true;return}
+ const {data:{session}}=await sb.auth.getSession();
+ if(session){location.replace("panel-profesional.html");return}
+ form.addEventListener("submit",async e=>{
+  e.preventDefault();msg.textContent="";btn.disabled=true;btn.textContent="INGRESANDO...";
+  const email=document.getElementById("email").value.trim();
+  const password=document.getElementById("password").value;
+  const {data,error}=await sb.auth.signInWithPassword({email,password});
+  if(error){console.error(error);msg.textContent="No pudimos iniciar sesión. Revisá el correo y la contraseña.";btn.disabled=false;btn.textContent="ENTRAR A MI PANEL →";return}
+  if(data.session) location.replace("panel-profesional.html");
+ });
+})();
+</script>
+</body></html>
