@@ -66,6 +66,42 @@
     }
   </style>
 
+
+  <style>
+    /* LOGO OFICIAL VARIANTE A — corrección Mark 1 */
+    .brand-logo-approved {
+      display: block;
+      width: 220px;
+      max-width: 28vw;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .cta-brand-approved {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cta-logo-approved {
+      display: block;
+      width: min(290px, 100%);
+      height: auto;
+      object-fit: contain;
+    }
+
+    @media (max-width: 900px) {
+      .brand-logo-approved {
+        width: 175px;
+        max-width: 42vw;
+      }
+
+      .cta-logo-approved {
+        width: min(230px, 70vw);
+      }
+    }
+  </style>
+
 </head>
 
 <body>
@@ -77,76 +113,13 @@
   <header class="main-header">
 
     <div class="header-inner">
-
       <!-- LOGO -->
-      <a href="#" class="brand">
-
-        <div class="brand-symbol" aria-hidden="true">
-
-          <svg
-            viewBox="0 0 120 72"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <defs>
-              <linearGradient
-                id="logoGradient"
-                x1="0"
-                y1="0"
-                x2="1"
-                y2="1"
-              >
-                <stop offset="0%" stop-color="#13f1c3"/>
-                <stop offset="100%" stop-color="#06a981"/>
-              </linearGradient>
-            </defs>
-
-            <path
-              d="M7 55
-                 C31 41, 55 28, 91 22
-                 C67 31, 49 41, 34 54
-                 C55 41, 78 37, 106 39
-                 C81 42, 59 49, 39 64
-                 C29 69, 18 66, 7 55Z"
-              fill="url(#logoGradient)"
-            />
-
-            <path
-              d="M13 48
-                 C37 32, 59 22, 92 15"
-              fill="none"
-              stroke="#62ffe2"
-              stroke-width="3"
-              stroke-linecap="round"
-            />
-
-            <circle
-              cx="103"
-              cy="11"
-              r="7"
-              fill="#16edbd"
-            />
-
-            <circle
-              cx="103"
-              cy="11"
-              r="3"
-              fill="#d9fff7"
-            />
-          </svg>
-
-        </div>
-
-        <div class="brand-text">
-          <div class="brand-name">
-            <span>SIN</span>
-            <strong>VUELTAS</strong>
-          </div>
-
-          <div class="brand-tagline">
-            TE CONECTA CON LA SOLUCIÓN
-          </div>
-        </div>
-
+      <a href="#" class="brand" aria-label="Sin Vueltas - Inicio">
+        <img
+          src="sin-vueltas-logo-variante-a.png"
+          alt="Sin Vueltas - Te conecta con la solución"
+          class="brand-logo-approved"
+        >
       </a>
 
 
@@ -771,45 +744,15 @@
 
 
       <div class="professional-cta-inner">
-
-        <div class="cta-brand-symbol">
-
-          <svg
-            viewBox="0 0 120 72"
-            xmlns="http://www.w3.org/2000/svg"
+        <div class="cta-brand-symbol cta-brand-approved">
+          <img
+            src="sin-vueltas-logo-variante-a.png"
+            alt="Sin Vueltas"
+            class="cta-logo-approved"
           >
-
-            <path
-              d="M7 55
-                 C31 41,55 28,91 22
-                 C67 31,49 41,34 54
-                 C55 41,78 37,106 39
-                 C81 42,59 49,39 64
-                 C29 69,18 66,7 55Z"
-              fill="#14e7b8"
-            />
-
-            <path
-              d="M13 48 C37 32,59 22,92 15"
-              fill="none"
-              stroke="#74ffe5"
-              stroke-width="3"
-              stroke-linecap="round"
-            />
-
-            <circle
-              cx="103"
-              cy="11"
-              r="7"
-              fill="#14e7b8"
-            />
-
-          </svg>
-
         </div>
 
-
-        <div class="cta-copy">
+<div class="cta-copy">
 
           <span class="section-kicker">
             PARA PROFESIONALES
