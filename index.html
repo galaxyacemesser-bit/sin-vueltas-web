@@ -32,6 +32,40 @@
 
   <!-- ESTILOS -->
   <link rel="stylesheet" href="style.css">
+
+  <style>
+    #solicitud-form select,
+    #solicitud-extra input,
+    #solicitud-extra textarea {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+    }
+    #solicitud-form select { font-weight: 700; cursor: pointer; }
+    #solicitud-form select option { color: #07111f; background: #fff; }
+    #solicitud-extra {
+      padding: 18px;
+      border: 1px solid rgba(20,231,183,.25);
+      border-radius: 18px;
+      background: rgba(7,17,31,.55);
+    }
+    #solicitud-extra input,
+    #solicitud-extra textarea {
+      box-sizing: border-box;
+      padding: 12px 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 12px;
+      background: rgba(255,255,255,.05);
+    }
+    #solicitud-mensaje { font-size: .92rem; line-height: 1.45; }
+    @media (max-width: 700px) {
+      #solicitud-extra > div:first-child { grid-template-columns: 1fr !important; }
+    }
+  </style>
+
 </head>
 
 <body>
@@ -214,33 +248,60 @@
             </div>
 
 
-            <div class="search-fields">
+            <form class="search-fields" id="solicitud-form">
 
-              <div class="search-field">
+              <label class="search-field" for="solicitud-servicio">
                 <span class="field-icon">⌕</span>
-
                 <div>
                   <small>Servicio</small>
-                  <strong>¿Qué necesitás?</strong>
+                  <select id="solicitud-servicio" required>
+                    <option value="">¿Qué necesitás?</option>
+                    <option value="Electricidad">Electricidad</option>
+                    <option value="Plomería">Plomería</option>
+                    <option value="Aire acondicionado">Aire acondicionado</option>
+                    <option value="Herrería">Herrería</option>
+                    <option value="Reparaciones del hogar">Reparaciones del hogar</option>
+                    <option value="Seguridad electrónica">Seguridad electrónica</option>
+                  </select>
                 </div>
-              </div>
+              </label>
 
-
-              <div class="search-field">
+              <label class="search-field" for="solicitud-localidad">
                 <span class="field-icon">●</span>
-
                 <div>
                   <small>Ubicación</small>
-                  <strong>Escobar</strong>
+                  <select id="solicitud-localidad" required>
+                    <option value="Escobar">Escobar</option>
+                    <option value="Matheu">Matheu</option>
+                    <option value="Garín">Garín</option>
+                    <option value="Pilar">Pilar</option>
+                    <option value="Campana">Campana</option>
+                    <option value="Zárate">Zárate</option>
+                  </select>
                 </div>
-              </div>
+              </label>
 
-
-              <button class="search-main-button">
+              <button class="search-main-button" type="submit" id="solicitud-submit">
                 Encontrar profesional
                 <span>→</span>
               </button>
 
+            </form>
+
+            <div id="solicitud-extra" style="display:none; margin-top:18px;">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <input id="cliente-nombre" type="text" placeholder="Tu nombre" autocomplete="name">
+                <input id="cliente-telefono" type="tel" placeholder="WhatsApp (ej. 3484...)" autocomplete="tel">
+              </div>
+              <textarea id="solicitud-descripcion" rows="3" placeholder="Contanos brevemente qué necesitás" style="width:100%;margin-top:12px;"></textarea>
+              <label style="display:flex;gap:8px;align-items:center;margin-top:10px;">
+                <input id="solicitud-urgente" type="checkbox">
+                <span>Lo necesito con urgencia</span>
+              </label>
+              <button class="search-main-button" type="button" id="publicar-solicitud" style="width:100%;margin-top:14px;">
+                Publicar solicitud <span>→</span>
+              </button>
+              <div id="solicitud-mensaje" style="margin-top:12px;"></div>
             </div>
 
           </div>
@@ -1007,6 +1068,88 @@
 
   <script src="app.js"></script>
 
+
+
+
+  <script>
+    (() => {
+      const form = document.getElementById("solicitud-form");
+      const extra = document.getElementById("solicitud-extra");
+      const publicar = document.getElementById("publicar-solicitud");
+      const mensaje = document.getElementById("solicitud-mensaje");
+      if (!form || !extra || !publicar) return;
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (!document.getElementById("solicitud-servicio").value) return;
+        extra.style.display = "block";
+        document.getElementById("cliente-nombre").focus();
+      });
+
+      publicar.addEventListener("click", async () => {
+        const nombre = document.getElementById("cliente-nombre").value.trim();
+        const telefono = document.getElementById("cliente-telefono").value.trim();
+        const servicio = document.getElementById("solicitud-servicio").value;
+        const localidad = document.getElementById("solicitud-localidad").value;
+        const descripcion = document.getElementById("solicitud-descripcion").value.trim();
+        const urgente = document.getElementById("solicitud-urgente").checked;
+
+        if (!nombre || !telefono || !servicio || !localidad || !descripcion) {
+          mensaje.textContent = "Completá nombre, WhatsApp y una breve descripción.";
+          return;
+        }
+
+        if (typeof supabaseClient === "undefined") {
+          mensaje.textContent = "No pudimos conectar con Sin Vueltas. Recargá la página e intentá nuevamente.";
+          return;
+        }
+
+        publicar.disabled = true;
+        publicar.textContent = "Buscando profesionales...";
+        mensaje.textContent = "";
+
+        try {
+          // RPC ya creada y probada en Supabase: crea solicitud + evento.
+          const { data: solicitudId, error: solicitudError } =
+            await supabaseClient.rpc("publicar_solicitud", {
+              p_cliente_nombre: nombre,
+              p_telefono: telefono,
+              p_servicio: servicio,
+              p_localidad: localidad,
+              p_modalidad: urgente ? "urgente" : "ahora",
+              p_descripcion: descripcion,
+              p_tipo_cliente: "domicilio",
+              p_urgente: urgente
+            });
+
+          if (solicitudError) throw solicitudError;
+
+          const id = Array.isArray(solicitudId) ? solicitudId[0] : solicitudId;
+
+          // RPC ya creada y probada: selecciona profesionales compatibles y genera avisos.
+          const { data: cantidadMatches, error: matchError } =
+            await supabaseClient.rpc("generar_matches", {
+              p_solicitud_id: id
+            });
+
+          if (matchError) throw matchError;
+
+          const cantidad = Number(Array.isArray(cantidadMatches) ? cantidadMatches[0] : cantidadMatches) || 0;
+
+          mensaje.innerHTML = cantidad > 0
+            ? `<strong>¡Solicitud publicada!</strong> Encontramos ${cantidad} profesional${cantidad === 1 ? "" : "es"} compatible${cantidad === 1 ? "" : "s"}. Ya estamos buscando respuesta.`
+            : `<strong>¡Solicitud publicada!</strong> Todavía no encontramos un profesional compatible. La solicitud quedó registrada.`;
+
+          publicar.textContent = "Solicitud publicada ✓";
+        } catch (error) {
+          console.error("Error publicando solicitud:", error);
+          mensaje.textContent = "No pudimos publicar la solicitud. Intentá nuevamente.";
+          publicar.disabled = false;
+          publicar.innerHTML = 'Publicar solicitud <span>→</span>';
+        }
+      });
+    })();
+  </script>
 
 
   <!-- ===================================================== -->
