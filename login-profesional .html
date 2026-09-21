@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Inicio de sesión para profesionales de Sin Vueltas">
+<title>Sin Vueltas | Iniciar sesión</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+:root{--bg:#050b14;--panel:#08121f;--text:#f5f7fb;--muted:#9dabbc;--accent:#28e8bf;--danger:#ffb9b9}
+body{margin:0;min-height:100vh;font-family:Montserrat,sans-serif;color:var(--text);background:radial-gradient(circle at 70% 25%,rgba(0,190,255,.12),transparent 30%),radial-gradient(circle at 20% 75%,rgba(34,231,189,.09),transparent 28%),var(--bg)}
+header{min-height:88px;padding:12px 5%;display:flex;align-items:center;border-bottom:1px solid rgba(34,231,189,.15);background:rgba(4,10,18,.88)}
+.logo{width:200px;max-width:48vw;height:auto;display:block}
+main{min-height:calc(100vh - 88px);display:grid;place-items:center;padding:45px 20px}
+.wrap{width:min(980px,100%);display:grid;grid-template-columns:1.05fr .95fr;border:1px solid rgba(34,231,189,.18);border-radius:24px;overflow:hidden;background:rgba(8,18,31,.9);box-shadow:0 30px 80px rgba(0,0,0,.35)}
+.info{padding:54px;background:linear-gradient(145deg,rgba(14,38,57,.94),rgba(5,15,27,.94))}
+.kicker{color:var(--accent);font-size:12px;font-weight:800;letter-spacing:.16em}
+h1{font-size:clamp(36px,5vw,58px);line-height:1.02;margin:14px 0 18px}h1 span{color:var(--accent)}
+.info p{color:#a8b5c4;line-height:1.7}.points{margin-top:30px;display:grid;gap:15px}.point{display:flex;gap:12px;align-items:center;color:#dce6ee;font-size:14px}.dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
+.login{padding:54px 44px}.login h2{font-size:27px;margin:0 0 8px}.sub{color:var(--muted);font-size:14px;line-height:1.5;margin-bottom:28px}
+label{display:block;color:#cdd7e1;font-size:13px;font-weight:700;margin:15px 0 7px}
+input{width:100%;height:50px;border-radius:11px;border:1px solid rgba(255,255,255,.13);background:#0c1929;color:white;padding:0 14px;font:inherit;outline:none}
+input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(40,232,191,.08)}
+.password-wrap{position:relative}.password-wrap input{padding-right:52px}
+.eye{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:42px;height:42px;border:0;background:transparent;color:#fff;display:grid;place-items:center;cursor:pointer;border-radius:9px}
+.eye:hover,.eye:focus-visible{background:rgba(255,255,255,.08);outline:1px solid rgba(255,255,255,.18)}
+.eye svg{width:23px;height:23px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.forgot{display:inline-block;margin-top:11px;color:var(--accent);font-size:13px;font-weight:700;text-decoration:none;cursor:pointer}.forgot:hover{text-decoration:underline}
+.submit{width:100%;height:52px;margin-top:22px;border:0;border-radius:12px;background:linear-gradient(90deg,#24e3ba,#68f6dc);color:#03231c;font-weight:900;font:inherit;cursor:pointer}.submit:disabled{opacity:.65;cursor:default}
+.message{min-height:24px;margin-top:14px;font-size:13px;line-height:1.45;color:var(--danger)}.message.ok{color:var(--accent)}
+.back{display:block;text-align:center;margin-top:22px;color:#91a2b5;text-decoration:none;font-size:13px}.back:hover{color:var(--accent)}
+.recovery{display:none}.recovery.active{display:block}.login-form.hidden{display:none}
+.secondary{width:100%;height:50px;margin-top:12px;border:1px solid rgba(255,255,255,.15);border-radius:12px;background:transparent;color:#fff;font:inherit;font-weight:700;cursor:pointer}
+@media(max-width:760px){.wrap{grid-template-columns:1fr}.info{padding:34px 28px}.login{padding:34px 28px}}
+</style>
+</head>
+<body>
+<header><a href="index.html"><img src="sin-vueltas-logo-variante-a.png" class="logo" alt="Sin Vueltas"></a></header>
+<main><section class="wrap">
+<div class="info">
+<div class="kicker">PARA PROFESIONALES</div>
+<h1>Tu trabajo.<br><span>Sin vueltas.</span></h1>
+<p>Ingresá con la misma cuenta que usaste para crear tu perfil profesional. Vas a acceder solamente a las oportunidades compatibles con tu perfil.</p>
+<div class="points"><div class="point"><i class="dot"></i>Oportunidades según oficio y zona</div><div class="point"><i class="dot"></i>Datos del cliente protegidos</div><div class="point"><i class="dot"></i>ME INTERESA — GRATIS en Mark 1</div></div>
+</div>
+<div class="login">
+<div id="login-view" class="login-form">
+<h2>Iniciar sesión</h2><p class="sub">Accedé a tu panel profesional de Sin Vueltas.</p>
+<form id="login-form">
+<label for="email">Correo electrónico</label><input id="email" type="email" autocomplete="email" required placeholder="tu@email.com">
+<label for="password">Contraseña</label>
+<div class="password-wrap"><input id="password" type="password" autocomplete="current-password" required placeholder="Tu contraseña">
+<button class="eye" id="toggle-password" type="button" aria-label="Mostrar contraseña" title="Mostrar contraseña">
+<svg id="eye-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+</button></div>
+<a id="forgot-link" class="forgot">¿Olvidaste tu contraseña?</a>
+<button id="submit" class="submit" type="submit">ENTRAR A MI PANEL →</button><div id="message" class="message"></div>
+</form></div>
+
+<div id="recovery-view" class="recovery">
+<h2>Recuperar contraseña</h2><p class="sub">Ingresá el correo de tu cuenta profesional. Supabase te enviará un enlace para crear una nueva contraseña.</p>
+<form id="recovery-form">
+<label for="recovery-email">Correo electrónico</label><input id="recovery-email" type="email" autocomplete="email" required placeholder="tu@email.com">
+<button id="recovery-submit" class="submit" type="submit">ENVIAR ENLACE DE RECUPERACIÓN →</button>
+<button id="back-login" class="secondary" type="button">VOLVER A INICIAR SESIÓN</button>
+<div id="recovery-message" class="message"></div>
+</form></div>
+<a class="back" href="index.html">← Volver a Sin Vueltas</a>
+</div></section></main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="app.js"></script>
+<script>
+(async()=>{
+ const sb=(typeof supabaseClient!=="undefined")?supabaseClient:window.supabaseClient;
+ const loginView=document.getElementById("login-view"), recoveryView=document.getElementById("recovery-view");
+ const form=document.getElementById("login-form"), msg=document.getElementById("message"), btn=document.getElementById("submit");
+ const password=document.getElementById("password"), toggle=document.getElementById("toggle-password");
+ const forgot=document.getElementById("forgot-link"), recoveryForm=document.getElementById("recovery-form");
+ const recoveryEmail=document.getElementById("recovery-email"), recoveryMsg=document.getElementById("recovery-message");
+ const recoveryBtn=document.getElementById("recovery-submit"), backLogin=document.getElementById("back-login");
+
+ toggle.addEventListener("click",()=>{
+   const showing=password.type==="text"; password.type=showing?"password":"text";
+   toggle.setAttribute("aria-label",showing?"Mostrar contraseña":"Ocultar contraseña");
+   toggle.setAttribute("title",showing?"Mostrar contraseña":"Ocultar contraseña");
+ });
+
+ forgot.addEventListener("click",()=>{
+   const current=document.getElementById("email").value.trim(); if(current) recoveryEmail.value=current;
+   loginView.classList.add("hidden"); recoveryView.classList.add("active"); recoveryMsg.textContent="";
+ });
+ backLogin.addEventListener("click",()=>{recoveryView.classList.remove("active");loginView.classList.remove("hidden");recoveryMsg.textContent=""});
+
+ if(!sb){msg.textContent="No pudimos conectar con Sin Vueltas.";btn.disabled=true;return}
+ const {data:{session}}=await sb.auth.getSession();
+ if(session){location.replace("panel-profesional.html");return}
+
+ form.addEventListener("submit",async e=>{
+   e.preventDefault();msg.className="message";msg.textContent="";btn.disabled=true;btn.textContent="INGRESANDO...";
+   const email=document.getElementById("email").value.trim();
+   const {data,error}=await sb.auth.signInWithPassword({email,password:password.value});
+   if(error){msg.textContent="No pudimos iniciar sesión. Revisá el correo y la contraseña.";btn.disabled=false;btn.textContent="ENTRAR A MI PANEL →";return}
+   if(data.session) location.replace("panel-profesional.html");
+ });
+
+ recoveryForm.addEventListener("submit",async e=>{
+   e.preventDefault();recoveryMsg.className="message";recoveryMsg.textContent="";recoveryBtn.disabled=true;recoveryBtn.textContent="ENVIANDO...";
+   const email=recoveryEmail.value.trim();
+   const redirectTo=location.origin+"/restablecer-contrasena.html";
+   const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo});
+   if(error){recoveryMsg.textContent="No pudimos enviar el correo de recuperación. Revisá el email e intentá nuevamente.";recoveryBtn.disabled=false;recoveryBtn.textContent="ENVIAR ENLACE DE RECUPERACIÓN →";return}
+   recoveryMsg.className="message ok";recoveryMsg.textContent="Listo. Revisá tu correo: te enviamos el enlace para restablecer la contraseña.";
+   recoveryBtn.disabled=false;recoveryBtn.textContent="REENVIAR ENLACE";
+ });
+})();
+</script>
+</body></html>
