@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sin Vueltas | Panel profesional</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#050b14;color:#f5f7fb;font-family:Montserrat,sans-serif}header{border-bottom:1px solid #173a3b;padding:14px 5%;display:flex;justify-content:space-between;align-items:center}.logo{width:190px;max-width:45vw}.session{color:#9db0bd;font-size:13px}main{max-width:1100px;margin:auto;padding:45px 22px}.kicker{color:#22e7bd;font-weight:800;letter-spacing:.16em;font-size:12px}h1{font-size:clamp(34px,5vw,56px);margin:10px 0}.intro{color:#9db0bd;line-height:1.6}.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:30px 0}.sum,.card{background:#0b1726;border:1px solid #16463f;border-radius:18px;padding:20px}.sum small{color:#9db0bd;display:block;margin-bottom:8px}.sum strong{font-size:21px}.card{margin-top:16px}.top{display:flex;justify-content:space-between;gap:15px}.badge,.score{color:#35edc8;font-size:12px;font-weight:800}.score{border:1px solid #1a5b50;border-radius:20px;padding:8px 12px;height:max-content}.card h2{margin:12px 0 5px}.place,.privacy{color:#9db0bd;font-size:13px}.desc{margin-top:18px;background:#101e2e;border-radius:12px;padding:15px;line-height:1.5}.privacy{margin-top:12px}.actions{display:flex;gap:10px;margin-top:20px}.actions button,.logout{border-radius:11px;padding:13px 17px;font-weight:800;cursor:pointer}.pass,.logout{background:transparent;color:#dce5ed;border:1px solid #294150}.interest{flex:1;border:0;background:#35edc8;color:#04221d}.message{color:#35edc8;margin-top:12px;font-size:13px}.empty{background:#0b1726;border:1px solid #16463f;border-radius:18px;padding:28px;color:#9db0bd;text-align:center}@media(max-width:700px){.summary{grid-template-columns:1fr}.actions,.top{flex-direction:column}}
+</style></head><body>
+<header><a href="index.html"><img class="logo" src="sin-vueltas-logo-variante-a.png" alt="Sin Vueltas"></a><div><span class="session" id="session">Comprobando sesión...</span> <button class="logout" id="logout">Cerrar sesión</button></div></header>
+<main><div class="kicker">PANEL PROFESIONAL</div><h1 id="welcome">Tus oportunidades.</h1>
+<p class="intro">Acá aparecen solicitudes compatibles con tu oficio, zona y preferencias. El contacto del cliente permanece protegido hasta avanzar con la oportunidad.</p>
+<div class="summary"><div class="sum"><small>Estado</small><strong id="status">—</strong></div><div class="sum"><small>Oportunidades</small><strong id="count">—</strong></div><div class="sum"><small>Zona</small><strong id="zone">—</strong></div></div>
+<h2>Nuevas oportunidades</h2><section id="list"><div class="empty">Buscando oportunidades...</div></section></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="app.js"></script>
+<script>
+(async()=>{
+ const list=document.getElementById("list");
+ const sb=(typeof supabaseClient!=="undefined")?supabaseClient:window.supabaseClient;
+ if(!sb){list.innerHTML='<div class="empty">No pudimos conectar con Sin Vueltas.</div>';return}
+ const {data:{session}}=await sb.auth.getSession();
+ if(!session){document.getElementById("session").textContent="Sesión no iniciada";list.innerHTML='<div class="empty">Iniciá sesión como profesional para ver tus oportunidades.</div>';return}
+ document.getElementById("session").textContent=session.user.email||"Sesión activa";
+ const {data:p}=await sb.from("profesionales").select("id,nombre,oficio,localidad,activo,disponible").eq("user_id",session.user.id).single();
+ if(!p){list.innerHTML='<div class="empty">No encontramos tu perfil profesional.</div>';return}
+ document.getElementById("welcome").textContent="Hola, "+p.nombre+".";
+ document.getElementById("status").textContent=p.activo?(p.disponible?"Disponible":"Activo"):"Inactivo";
+ document.getElementById("zone").textContent=p.localidad||"—";
+ const {data:ms,error}=await sb.from("matches").select("id,solicitud_id,score,estado,matched_at").eq("profesional_id",p.id).in("estado",["seleccionado","interesado"]).order("matched_at",{ascending:false});
+ if(error){list.innerHTML='<div class="empty">No pudimos cargar las oportunidades.</div>';return}
+ document.getElementById("count").textContent=ms?.length||0;
+ if(!ms?.length){list.innerHTML='<div class="empty">No tenés oportunidades pendientes.</div>';return}
+ const esc=s=>String(s??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
+ let out="";
+ for(const m of ms){
+  const {data:s}=await sb.from("solicitudes").select("servicio,localidad,descripcion,urgente,tipo_cliente").eq("id",m.solicitud_id).single();
+  if(!s)continue; const interested=m.estado==="interesado";
+  out+=`<article class="card"><div class="top"><div><div class="badge">● ${s.urgente?"SOLICITUD URGENTE":"NUEVA OPORTUNIDAD"}</div><h2>${esc(s.servicio)}</h2><div class="place">⌖ ${esc(s.localidad)} · ${esc(s.tipo_cliente||"domicilio")}</div></div><div class="score">Coincidencia ${esc(m.score??"—")}</div></div><div class="desc">${esc(s.descripcion||"Sin descripción adicional.")}</div><div class="privacy">El teléfono del cliente no se muestra en esta etapa.</div><div class="actions"><button class="pass" type="button">PASAR</button><button class="interest" data-id="${m.id}" ${interested?"disabled":""}>${interested?"ME INTERESA ✓":"ME INTERESA — GRATIS"}</button></div><div class="message" id="msg-${m.id}">${interested?"Ya marcaste interés en esta oportunidad.":""}</div></article>`;
+ }
+ list.innerHTML=out||'<div class="empty">No hay oportunidades visibles.</div>';
+ document.querySelectorAll(".interest[data-id]").forEach(b=>b.onclick=async()=>{const id=Number(b.dataset.id);b.disabled=true;b.textContent="Procesando...";const {error}=await sb.rpc("me_interesa",{p_match_id:id});if(error){document.getElementById("msg-"+id).textContent="No pudimos registrar el interés.";b.disabled=false;b.textContent="ME INTERESA — GRATIS"}else{b.textContent="ME INTERESA ✓";document.getElementById("msg-"+id).textContent="Interés registrado. El contacto se habilitará en el siguiente paso."}});
+ document.getElementById("logout").onclick=async()=>{await sb.auth.signOut();location.href="index.html"};
+})();
+</script></body></html>
