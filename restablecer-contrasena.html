@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Sin Vueltas | Nueva contraseña</title>
+
+  <meta
+    name="description"
+    content="Restablecer contraseña profesional de Sin Vueltas"
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #060812;
+      --panel: rgba(9, 13, 30, 0.88);
+      --text: #f5f7fb;
+      --muted: #9da6c1;
+      --accent: #28e0d9;
+      --accent2: #64f3ff;
+      --danger: #ff6b81;
+      --success: #52e6b0;
+      --border: rgba(34, 231, 189, 0.22);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Montserrat", sans-serif;
+      color: var(--text);
+
+      background:
+        radial-gradient(
+          circle at 25% 70%,
+          rgba(22, 82, 190, 0.30),
+          transparent 35%
+        ),
+        radial-gradient(
+          circle at 80% 25%,
+          rgba(18, 205, 192, 0.10),
+          transparent 30%
+        ),
+        var(--bg);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .box {
+      width: min(1180px, 100%);
+      min-height: 650px;
+
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      background: rgba(5, 8, 19, 0.70);
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      overflow: hidden;
+
+      box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.45),
+        inset 0 0 70px rgba(19, 75, 180, 0.06);
+    }
+
+    .intro {
+      padding: 70px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      background:
+        radial-gradient(
+          circle at 25% 70%,
+          rgba(13, 104, 230, 0.22),
+          transparent 45%
+        );
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      margin-bottom: 24px;
+    }
+
+    .intro h1 {
+      margin: 0;
+      font-size: clamp(48px, 6vw, 78px);
+      line-height: 0.98;
+      letter-spacing: -3px;
+      font-weight: 900;
+    }
+
+    .intro h1 span {
+      display: block;
+      color: var(--accent);
+    }
+
+    .intro p {
+      margin: 32px 0 0;
+      max-width: 520px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.75;
+      font-weight: 500;
+    }
+
+    .points {
+      margin-top: 38px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .point {
+      color: #c6cce0;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 16px var(--accent);
+      flex: 0 0 auto;
+    }
+
+    .form-side {
+      padding: 70px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .form {
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .form h2 {
+      margin: 0 0 12px;
+      font-size: 38px;
+      font-weight: 900;
+      letter-spacing: -1px;
+    }
+
+    .form > p {
+      color: var(--muted);
+      line-height: 1.6;
+      margin: 0 0 34px;
+      font-weight: 500;
+    }
+
+    label {
+      display: block;
+      margin: 18px 0 9px;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .password-wrap {
+      position: relative;
+    }
+
+    input {
+      width: 100%;
+      min-height: 64px;
+
+      padding: 0 58px 0 18px;
+
+      border-radius: 14px;
+      border: 1px solid rgba(77, 130, 255, 0.35);
+
+      background: rgba(13, 27, 72, 0.55);
+      color: white;
+
+      font-family: inherit;
+      font-size: 17px;
+      font-weight: 600;
+
+      outline: none;
+      transition: 0.2s ease;
+    }
+
+    input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(40, 224, 217, 0.10);
+    }
+
+    .eye {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+
+      width: 44px;
+      height: 44px;
+
+      display: grid;
+      place-items: center;
+
+      border: 0;
+      border-radius: 10px;
+
+      background: rgba(40, 224, 217, 0.12);
+      color: var(--accent);
+
+      cursor: pointer;
+    }
+
+    .eye:hover {
+      background: rgba(40, 224, 217, 0.22);
+    }
+
+    .eye svg {
+      width: 24px;
+      height: 24px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .main-button {
+      width: 100%;
+      min-height: 68px;
+      margin-top: 28px;
+
+      border: 0;
+      border-radius: 14px;
+
+      background:
+        linear-gradient(
+          90deg,
+          var(--accent2),
+          #7ff3df
+        );
+
+      color: #062b31;
+
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 0.4px;
+
+      cursor: pointer;
+    }
+
+    .main-button:hover {
+      filter: brightness(1.05);
+    }
+
+    .main-button:disabled {
+      opacity: 0.55;
+      cursor: wait;
+    }
+
+    .message {
+      min-height: 26px;
+      margin-top: 18px;
+      font-size: 14px;
+      line-height: 1.5;
+      font-weight: 700;
+    }
+
+    .message.error {
+      color: var(--danger);
+    }
+
+    .message.success {
+      color: var(--success);
+    }
+
+    .panel-button {
+      display: none;
+      width: 100%;
+      min-height: 64px;
+      margin-top: 12px;
+
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 14px;
+      border: 1px solid rgba(40, 224, 217, 0.35);
+
+      color: white;
+      text-decoration: none;
+      font-weight: 900;
+
+      background: rgba(40, 224, 217, 0.08);
+    }
+
+    .back {
+      display: block;
+      margin-top: 32px;
+
+      text-align: center;
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .back:hover {
+      color: white;
+    }
+
+    @media (max-width: 850px) {
+      body {
+        padding: 14px;
+      }
+
+      .box {
+        grid-template-columns: 1fr;
+      }
+
+      .intro {
+        padding: 45px 28px 30px;
+      }
+
+      .intro h1 {
+        font-size: 52px;
+      }
+
+      .intro p {
+        font-size: 16px;
+      }
+
+      .points {
+        display: none;
+      }
+
+      .form-side {
+        padding: 35px 28px 45px;
+      }
+
+      .form h2 {
+        font-size: 31px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="box">
+
+    <section class="intro">
+
+      <div class="eyebrow">
+        PARA PROFESIONALES
+      </div>
+
+      <h1>
+        Tu trabajo.
+        <span>Sin vueltas.</span>
+      </h1>
+
+      <p>
+        Creá una nueva contraseña para volver a acceder
+        a tus oportunidades y a tu panel profesional.
+      </p>
+
+      <div class="points">
+
+        <div class="point">
+          <span class="dot"></span>
+          Tu cuenta permanece protegida
+        </div>
+
+        <div class="point">
+          <span class="dot"></span>
+          Tus oportunidades siguen asociadas a tu perfil
+        </div>
+
+        <div class="point">
+          <span class="dot"></span>
+          Un único acceso a tu panel profesional
+        </div>
+
+      </div>
+
+    </section>
+
+    <section class="form-side">
+
+      <div class="form">
+
+        <h2>Nueva contraseña</h2>
+
+        <p>
+          Elegí una nueva contraseña para tu cuenta
+          profesional de Sin Vueltas.
+        </p>
+
+        <form id="passwordForm">
+
+          <label for="password">
+            Nueva contraseña
+          </label>
+
+          <div class="password-wrap">
+
+            <input
+              id="password"
+              type="password"
+              autocomplete="new-password"
+              minlength="8"
+              required
+            >
+
+            <button
+              class="eye"
+              type="button"
+              data-target="password"
+              aria-label="Mostrar contraseña"
+              title="Mostrar contraseña"
+            >
+
+              <svg viewBox="0 0 24 24">
+                <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+
+            </button>
+
+          </div>
+
+          <label for="passwordConfirm">
+            Repetir contraseña
+          </label>
+
+          <div class="password-wrap">
+
+            <input
+              id="passwordConfirm"
+              type="password"
+              autocomplete="new-password"
+              minlength="8"
+              required
+            >
+
+            <button
+              class="eye"
+              type="button"
+              data-target="passwordConfirm"
+              aria-label="Mostrar contraseña"
+              title="Mostrar contraseña"
+            >
+
+              <svg viewBox="0 0 24 24">
+                <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+
+            </button>
+
+          </div>
+
+          <button
+            id="saveButton"
+            class="main-button"
+            type="submit"
+          >
+            GUARDAR NUEVA CONTRASEÑA →
+          </button>
+
+        </form>
+
+        <div
+          id="message"
+          class="message"
+          aria-live="polite"
+        ></div>
+
+        <a
+          id="panelButton"
+          class="panel-button"
+          href="panel-profesional.html"
+        >
+          IR A MI PANEL →
+        </a>
+
+        <a
+          class="back"
+          href="login-profesional.html"
+        >
+          ← Volver a iniciar sesión
+        </a>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Cliente de Supabase que ya usa Sin Vueltas -->
+  <script src="app.js"></script>
+
+  <script>
+    const form = document.getElementById("passwordForm");
+    const password = document.getElementById("password");
+    const passwordConfirm =
+      document.getElementById("passwordConfirm");
+
+    const saveButton =
+      document.getElementById("saveButton");
+
+    const message =
+      document.getElementById("message");
+
+    const panelButton =
+      document.getElementById("panelButton");
+
+
+    // Mostrar / ocultar contraseñas
+    document.querySelectorAll(".eye").forEach((button) => {
+
+      button.addEventListener("click", () => {
+
+        const input =
+          document.getElementById(button.dataset.target);
+
+        const mostrar =
+          input.type === "password";
+
+        input.type =
+          mostrar ? "text" : "password";
+
+        button.setAttribute(
+          "aria-label",
+          mostrar
+            ? "Ocultar contraseña"
+            : "Mostrar contraseña"
+        );
+
+        button.setAttribute(
+          "title",
+          mostrar
+            ? "Ocultar contraseña"
+            : "Mostrar contraseña"
+        );
+
+      });
+
+    });
+
+
+    form.addEventListener("submit", async (event) => {
+
+      event.preventDefault();
+
+      message.textContent = "";
+      message.className = "message";
+
+
+      if (password.value.length < 8) {
+
+        message.textContent =
+          "La contraseña debe tener al menos 8 caracteres.";
+
+        message.classList.add("error");
+
+        return;
+      }
+
+
+      if (password.value !== passwordConfirm.value) {
+
+        message.textContent =
+          "Las contraseñas no coinciden.";
+
+        message.classList.add("error");
+
+        return;
+      }
+
+
+      saveButton.disabled = true;
+      saveButton.textContent =
+        "GUARDANDO...";
+
+
+      try {
+
+        const {
+          data: sessionData,
+          error: sessionError
+        } = await sb.auth.getSession();
+
+
+        if (sessionError) {
+          throw sessionError;
+        }
+
+
+        if (!sessionData.session) {
+
+          throw new Error(
+            "El enlace de recuperación no es válido o venció. Solicitá uno nuevo."
+          );
+
+        }
+
+
+        const {
+          error
+        } = await sb.auth.updateUser({
+          password: password.value
+        });
+
+
+        if (error) {
+          throw error;
+        }
+
+
+        message.textContent =
+          "Contraseña actualizada ✓ Ya podés ingresar a tu panel.";
+
+        message.classList.add("success");
+
+        form.style.display = "none";
+        panelButton.style.display = "flex";
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        message.textContent =
+          error.message ||
+          "No pudimos actualizar la contraseña.";
+
+        message.classList.add("error");
+
+        saveButton.disabled = false;
+        saveButton.textContent =
+          "GUARDAR NUEVA CONTRASEÑA →";
+
+      }
+
+    });
+  </script>
+
+</body>
+</html>
