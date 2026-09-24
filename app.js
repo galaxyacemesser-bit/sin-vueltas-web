@@ -5,7 +5,8 @@ const supabaseClient = supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
-
+window.supabaseClient =
+  supabaseClient;
 
 // CONTADOR TOTAL
 
