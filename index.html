@@ -44,14 +44,24 @@
       color: inherit;
       font: inherit;
     }
-    #solicitud-form select { font-weight: 700; cursor: pointer; }
-    #solicitud-form select option { color: #07111f; background: #fff; }
+
+    #solicitud-form select {
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    #solicitud-form select option {
+      color: #07111f;
+      background: #fff;
+    }
+
     #solicitud-extra {
       padding: 18px;
       border: 1px solid rgba(20,231,183,.25);
       border-radius: 18px;
       background: rgba(7,17,31,.55);
     }
+
     #solicitud-extra input,
     #solicitud-extra textarea {
       box-sizing: border-box;
@@ -60,15 +70,22 @@
       border-radius: 12px;
       background: rgba(255,255,255,.05);
     }
-    #solicitud-mensaje { font-size: .92rem; line-height: 1.45; }
+
+    #solicitud-mensaje {
+      font-size: .92rem;
+      line-height: 1.45;
+    }
+
     @media (max-width: 700px) {
-      #solicitud-extra > div:first-child { grid-template-columns: 1fr !important; }
+      #solicitud-extra > div:first-child {
+        grid-template-columns: 1fr !important;
+      }
     }
   </style>
 
-
   <style>
     /* LOGO OFICIAL VARIANTE A — corrección Mark 1 */
+
     .brand-logo-approved {
       display: block;
       width: 220px;
@@ -113,6 +130,7 @@
   <header class="main-header">
 
     <div class="header-inner">
+
       <!-- LOGO -->
       <a href="#" class="brand" aria-label="Sin Vueltas - Inicio">
         <img
@@ -121,7 +139,6 @@
           class="brand-logo-approved"
         >
       </a>
-
 
       <!-- NAVEGACIÓN -->
       <nav class="main-nav">
@@ -144,7 +161,6 @@
 
       </nav>
 
-
       <!-- ACCIONES HEADER -->
       <div class="header-actions">
 
@@ -153,11 +169,19 @@
           Escobar
         </button>
 
-        <button class="login-button">
+        <button
+          class="login-button"
+          type="button"
+          onclick="window.location.href='login-profesional.html'"
+        >
           Iniciar sesión
         </button>
 
-        <button class="professional-button">
+        <button
+          class="professional-button"
+          type="button"
+          onclick="window.location.href='registro-profesional.html'"
+        >
           Soy profesional
         </button>
 
@@ -166,8 +190,6 @@
     </div>
 
   </header>
-
-
 
   <!-- ===================================================== -->
   <!-- HERO -->
@@ -199,7 +221,6 @@
             Encontrá personas disponibles cuando las necesitás.
           </p>
 
-
           <!-- BUSCADOR -->
 
           <div class="search-panel">
@@ -220,13 +241,16 @@
 
             </div>
 
-
             <form class="search-fields" id="solicitud-form">
 
               <label class="search-field" for="solicitud-servicio">
+
                 <span class="field-icon">⌕</span>
+
                 <div>
+
                   <small>Servicio</small>
+
                   <select id="solicitud-servicio" required>
                     <option value="">¿Qué necesitás?</option>
                     <option value="Electricidad">Electricidad</option>
@@ -236,13 +260,19 @@
                     <option value="Reparaciones del hogar">Reparaciones del hogar</option>
                     <option value="Seguridad electrónica">Seguridad electrónica</option>
                   </select>
+
                 </div>
+
               </label>
 
               <label class="search-field" for="solicitud-localidad">
+
                 <span class="field-icon">●</span>
+
                 <div>
+
                   <small>Ubicación</small>
+
                   <select id="solicitud-localidad" required>
                     <option value="Escobar">Escobar</option>
                     <option value="Matheu">Matheu</option>
@@ -251,70 +281,129 @@
                     <option value="Campana">Campana</option>
                     <option value="Zárate">Zárate</option>
                   </select>
+
                 </div>
+
               </label>
 
-              <button class="search-main-button" type="submit" id="solicitud-submit">
+              <button
+                class="search-main-button"
+                type="submit"
+                id="solicitud-submit"
+              >
                 Encontrar profesional
                 <span>→</span>
               </button>
 
             </form>
 
-            <div id="solicitud-extra" style="display:none; margin-top:18px;">
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-                <input id="cliente-nombre" type="text" placeholder="Tu nombre" autocomplete="name">
-                <input id="cliente-telefono" type="tel" placeholder="WhatsApp (ej. 3484...)" autocomplete="tel">
+            <div
+              id="solicitud-extra"
+              style="display:none; margin-top:18px;"
+            >
+
+              <div
+                style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"
+              >
+
+                <input
+                  id="cliente-nombre"
+                  type="text"
+                  placeholder="Tu nombre"
+                  autocomplete="name"
+                >
+
+                <input
+                  id="cliente-telefono"
+                  type="tel"
+                  placeholder="WhatsApp (ej. 3484...)"
+                  autocomplete="tel"
+                >
+
               </div>
-              <textarea id="solicitud-descripcion" rows="3" placeholder="Contanos brevemente qué necesitás" style="width:100%;margin-top:12px;"></textarea>
-              <label style="display:flex;gap:8px;align-items:center;margin-top:10px;">
-                <input id="solicitud-urgente" type="checkbox">
+
+              <textarea
+                id="solicitud-descripcion"
+                rows="3"
+                placeholder="Contanos brevemente qué necesitás"
+                style="width:100%;margin-top:12px;"
+              ></textarea>
+
+              <label
+                style="display:flex;gap:8px;align-items:center;margin-top:10px;"
+              >
+
+                <input
+                  id="solicitud-urgente"
+                  type="checkbox"
+                >
+
                 <span>Lo necesito con urgencia</span>
+
               </label>
-              <button class="search-main-button" type="button" id="publicar-solicitud" style="width:100%;margin-top:14px;">
-                Publicar solicitud <span>→</span>
+
+              <button
+                class="search-main-button"
+                type="button"
+                id="publicar-solicitud"
+                style="width:100%;margin-top:14px;"
+              >
+                Publicar solicitud
+                <span>→</span>
               </button>
-              <div id="solicitud-mensaje" style="margin-top:12px;"></div>
+
+              <div
+                id="solicitud-mensaje"
+                style="margin-top:12px;"
+              ></div>
+
             </div>
 
           </div>
-
 
           <!-- BENEFICIOS -->
 
           <div class="hero-benefits">
 
             <div class="benefit">
+
               <span class="benefit-icon">✓</span>
+
               <div>
                 <strong>Profesionales</strong>
                 <small>Perfiles y reputación</small>
               </div>
+
             </div>
 
             <div class="benefit">
+
               <span class="benefit-icon">⌖</span>
+
               <div>
                 <strong>Cerca tuyo</strong>
                 <small>Buscá por zona</small>
               </div>
+
             </div>
 
             <div class="benefit">
+
               <span class="benefit-icon">⚡</span>
+
               <div>
                 <strong>Sin vueltas</strong>
                 <small>Contacto rápido</small>
               </div>
+
             </div>
 
           </div>
 
         </div>
 
-
-
         <!-- DERECHA -->
+
         <div class="hero-live">
 
           <div class="live-header">
@@ -330,7 +419,6 @@
 
           </div>
 
-
           <!-- CONTADOR REAL SUPABASE -->
 
           <div class="availability-card">
@@ -340,6 +428,7 @@
             </div>
 
             <div>
+
               <small>
                 PROFESIONALES DISPONIBLES
               </small>
@@ -347,10 +436,10 @@
               <strong id="availability-text">
                 Cargando...
               </strong>
+
             </div>
 
           </div>
-
 
           <!-- MAPA -->
 
@@ -364,12 +453,14 @@
             <div id="map"></div>
 
             <div class="map-bottom-badge">
+
               <span class="pulse-dot"></span>
 
               <div>
                 <strong>Escobar</strong>
                 <small>Actividad en tiempo real</small>
               </div>
+
             </div>
 
           </div>
@@ -379,8 +470,6 @@
       </div>
 
     </section>
-
-
 
     <!-- ===================================================== -->
     <!-- FRANJA MARCA -->
@@ -420,8 +509,6 @@
 
     </section>
 
-
-
     <!-- ===================================================== -->
     <!-- CATEGORÍAS -->
     <!-- ===================================================== -->
@@ -434,6 +521,7 @@
       <div class="section-heading">
 
         <div>
+
           <span class="section-kicker">
             EXPLORÁ POR CATEGORÍA
           </span>
@@ -441,6 +529,7 @@
           <h2>
             ¿Qué necesitás hoy?
           </h2>
+
         </div>
 
         <button class="link-button">
@@ -450,9 +539,7 @@
 
       </div>
 
-
       <div class="categories-grid">
-
 
         <!-- ELECTRICISTAS -->
 
@@ -465,16 +552,16 @@
           <h3>Electricistas</h3>
 
           <div class="category-counter">
+
             <strong id="electricistas-count">
               ...
             </strong>
 
             <span>disponibles</span>
+
           </div>
 
         </article>
-
-
 
         <!-- PLOMEROS -->
 
@@ -487,16 +574,16 @@
           <h3>Plomeros</h3>
 
           <div class="category-counter">
+
             <strong id="plomeros-count">
               ...
             </strong>
 
             <span>disponibles</span>
+
           </div>
 
         </article>
-
-
 
         <!-- AIRE -->
 
@@ -509,16 +596,16 @@
           <h3>Aire acondicionado</h3>
 
           <div class="category-counter">
+
             <strong id="aires-count">
               ...
             </strong>
 
             <span>disponibles</span>
+
           </div>
 
         </article>
-
-
 
         <!-- HERREROS -->
 
@@ -531,16 +618,16 @@
           <h3>Herrería</h3>
 
           <div class="category-counter">
+
             <strong id="herreros-count">
               ...
             </strong>
 
             <span>disponibles</span>
+
           </div>
 
         </article>
-
-
 
         <!-- PINTORES -->
 
@@ -561,8 +648,6 @@
 
         </article>
 
-
-
         <!-- JARDINEROS -->
 
         <article class="category-card">
@@ -582,12 +667,9 @@
 
         </article>
 
-
       </div>
 
     </section>
-
-
 
     <!-- ===================================================== -->
     <!-- PROFESIONALES -->
@@ -623,7 +705,6 @@
 
       </div>
 
-
       <!-- ESTE CONTENEDOR LO SIGUE LLENANDO APP.JS -->
 
       <div
@@ -638,8 +719,6 @@
       </div>
 
     </section>
-
-
 
     <!-- ===================================================== -->
     <!-- COMO FUNCIONA -->
@@ -670,7 +749,6 @@
 
         </div>
 
-
         <div class="how-steps">
 
           <article>
@@ -689,7 +767,6 @@
 
           </article>
 
-
           <article>
 
             <span>02</span>
@@ -705,7 +782,6 @@
             </p>
 
           </article>
-
 
           <article>
 
@@ -729,8 +805,6 @@
 
     </section>
 
-
-
     <!-- ===================================================== -->
     <!-- PARA PROFESIONALES -->
     <!-- ===================================================== -->
@@ -742,17 +816,19 @@
 
       <div class="cta-glow"></div>
 
-
       <div class="professional-cta-inner">
+
         <div class="cta-brand-symbol cta-brand-approved">
+
           <img
             src="sin-vueltas-logo-variante-a.png"
             alt="Sin Vueltas"
             class="cta-logo-approved"
           >
+
         </div>
 
-<div class="cta-copy">
+        <div class="cta-copy">
 
           <span class="section-kicker">
             PARA PROFESIONALES
@@ -769,7 +845,6 @@
             de clientes.
           </p>
 
-
           <div class="cta-benefits">
 
             <span>✓ Tu perfil profesional</span>
@@ -779,14 +854,16 @@
 
           </div>
 
-
-          <button class="cta-button">
+          <button
+            class="cta-button"
+            type="button"
+            onclick="window.location.href='registro-profesional.html'"
+          >
             Crear mi perfil profesional
             <span>→</span>
           </button>
 
         </div>
-
 
         <div class="cta-dashboard">
 
@@ -842,15 +919,11 @@
 
     </section>
 
-
-
     <!-- ===================================================== -->
     <!-- FOOTER CORPORATIVO -->
     <!-- ===================================================== -->
 
     <footer class="main-footer">
-
-      <!-- EFECTO CARRETERA / MOVIMIENTO -->
 
       <div class="footer-road">
 
@@ -860,10 +933,7 @@
 
       </div>
 
-
       <div class="footer-main">
-
-        <!-- LOGO FOOTER -->
 
         <div class="footer-brand">
 
@@ -905,7 +975,6 @@
 
             </div>
 
-
             <div>
 
               <div class="footer-brand-name">
@@ -920,7 +989,6 @@
 
           </div>
 
-
           <div class="footer-slogan">
 
             Más que servicios,<br>
@@ -929,8 +997,6 @@
           </div>
 
         </div>
-
-
 
         <!-- PILARES -->
 
@@ -970,8 +1036,6 @@
 
       </div>
 
-
-
       <div class="footer-bottom">
 
         <span>
@@ -990,8 +1054,6 @@
 
   </main>
 
-
-
   <!-- ===================================================== -->
   <!-- LIBRERÍAS -->
   <!-- ===================================================== -->
@@ -1004,46 +1066,81 @@
     src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
   ></script>
 
-
   <!-- ===================================================== -->
   <!-- TU APP.JS ACTUAL -->
   <!-- ===================================================== -->
 
   <script src="app.js"></script>
 
-
-
+  <!-- ===================================================== -->
+  <!-- PUBLICACIÓN DE SOLICITUD -->
+  <!-- ===================================================== -->
 
   <script>
     (() => {
+
       const form = document.getElementById("solicitud-form");
       const extra = document.getElementById("solicitud-extra");
       const publicar = document.getElementById("publicar-solicitud");
       const mensaje = document.getElementById("solicitud-mensaje");
+
       if (!form || !extra || !publicar) return;
 
       form.addEventListener("submit", (e) => {
+
         e.preventDefault();
-        if (!document.getElementById("solicitud-servicio").value) return;
+
+        if (!document.getElementById("solicitud-servicio").value) {
+          return;
+        }
+
         extra.style.display = "block";
-        document.getElementById("cliente-nombre").focus();
+
+        document
+          .getElementById("cliente-nombre")
+          .focus();
+
       });
 
       publicar.addEventListener("click", async () => {
-        const nombre = document.getElementById("cliente-nombre").value.trim();
-        const telefono = document.getElementById("cliente-telefono").value.trim();
-        const servicio = document.getElementById("solicitud-servicio").value;
-        const localidad = document.getElementById("solicitud-localidad").value;
-        const descripcion = document.getElementById("solicitud-descripcion").value.trim();
-        const urgente = document.getElementById("solicitud-urgente").checked;
 
-        if (!nombre || !telefono || !servicio || !localidad || !descripcion) {
-          mensaje.textContent = "Completá nombre, WhatsApp y una breve descripción.";
+        const nombre =
+          document.getElementById("cliente-nombre").value.trim();
+
+        const telefono =
+          document.getElementById("cliente-telefono").value.trim();
+
+        const servicio =
+          document.getElementById("solicitud-servicio").value;
+
+        const localidad =
+          document.getElementById("solicitud-localidad").value;
+
+        const descripcion =
+          document.getElementById("solicitud-descripcion").value.trim();
+
+        const urgente =
+          document.getElementById("solicitud-urgente").checked;
+
+        if (
+          !nombre ||
+          !telefono ||
+          !servicio ||
+          !localidad ||
+          !descripcion
+        ) {
+
+          mensaje.textContent =
+            "Completá nombre, WhatsApp y una breve descripción.";
+
           return;
         }
 
         if (typeof supabaseClient === "undefined") {
-          mensaje.textContent = "No pudimos conectar con Sin Vueltas. Recargá la página e intentá nuevamente.";
+
+          mensaje.textContent =
+            "No pudimos conectar con Sin Vueltas. Recargá la página e intentá nuevamente.";
+
           return;
         }
 
@@ -1052,9 +1149,13 @@
         mensaje.textContent = "";
 
         try {
-          // RPC ya creada y probada en Supabase: crea solicitud + evento.
-          const { data: solicitudId, error: solicitudError } =
-            await supabaseClient.rpc("publicar_solicitud", {
+
+          const {
+            data: solicitudId,
+            error: solicitudError
+          } = await supabaseClient.rpc(
+            "publicar_solicitud",
+            {
               p_cliente_nombre: nombre,
               p_telefono: telefono,
               p_servicio: servicio,
@@ -1063,37 +1164,68 @@
               p_descripcion: descripcion,
               p_tipo_cliente: "domicilio",
               p_urgente: urgente
-            });
+            }
+          );
 
-          if (solicitudError) throw solicitudError;
+          if (solicitudError) {
+            throw solicitudError;
+          }
 
-          const id = Array.isArray(solicitudId) ? solicitudId[0] : solicitudId;
+          const id =
+            Array.isArray(solicitudId)
+              ? solicitudId[0]
+              : solicitudId;
 
-          // RPC ya creada y probada: selecciona profesionales compatibles y genera avisos.
-          const { data: cantidadMatches, error: matchError } =
-            await supabaseClient.rpc("generar_matches", {
+          const {
+            data: cantidadMatches,
+            error: matchError
+          } = await supabaseClient.rpc(
+            "generar_matches",
+            {
               p_solicitud_id: id
-            });
+            }
+          );
 
-          if (matchError) throw matchError;
+          if (matchError) {
+            throw matchError;
+          }
 
-          const cantidad = Number(Array.isArray(cantidadMatches) ? cantidadMatches[0] : cantidadMatches) || 0;
+          const cantidad =
+            Number(
+              Array.isArray(cantidadMatches)
+                ? cantidadMatches[0]
+                : cantidadMatches
+            ) || 0;
 
-          mensaje.innerHTML = cantidad > 0
-            ? `<strong>¡Solicitud publicada!</strong> Encontramos ${cantidad} profesional${cantidad === 1 ? "" : "es"} compatible${cantidad === 1 ? "" : "s"}. Ya estamos buscando respuesta.`
-            : `<strong>¡Solicitud publicada!</strong> Todavía no encontramos un profesional compatible. La solicitud quedó registrada.`;
+          mensaje.innerHTML =
+            cantidad > 0
+              ? `<strong>¡Solicitud publicada!</strong> Encontramos ${cantidad} profesional${cantidad === 1 ? "" : "es"} compatible${cantidad === 1 ? "" : "s"}. Ya estamos buscando respuesta.`
+              : `<strong>¡Solicitud publicada!</strong> Todavía no encontramos un profesional compatible. La solicitud quedó registrada.`;
 
-          publicar.textContent = "Solicitud publicada ✓";
+          publicar.textContent =
+            "Solicitud publicada ✓";
+
         } catch (error) {
-          console.error("Error publicando solicitud:", error);
-          mensaje.textContent = "No pudimos publicar la solicitud. Intentá nuevamente.";
+
+          console.error(
+            "Error publicando solicitud:",
+            error
+          );
+
+          mensaje.textContent =
+            "No pudimos publicar la solicitud. Intentá nuevamente.";
+
           publicar.disabled = false;
-          publicar.innerHTML = 'Publicar solicitud <span>→</span>';
+
+          publicar.innerHTML =
+            'Publicar solicitud <span>→</span>';
+
         }
+
       });
+
     })();
   </script>
-
 
   <!-- ===================================================== -->
   <!-- MAPA -->
@@ -1112,7 +1244,6 @@
       13
     );
 
-
     L.tileLayer(
       "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       {
@@ -1120,8 +1251,6 @@
         attribution: "&copy; OpenStreetMap"
       }
     ).addTo(mapa);
-
-
 
     const professionalIcon = L.divIcon({
 
@@ -1138,8 +1267,6 @@
       iconAnchor: [15, 15]
 
     });
-
-
 
     const demoProfessionals = [
 
@@ -1173,8 +1300,6 @@
 
     ];
 
-
-
     demoProfessionals.forEach(
       profesional => {
 
@@ -1191,6 +1316,7 @@
         .bindPopup(
           `
             <div class="map-popup">
+
               <strong>
                 ${profesional.nombre}
               </strong>
@@ -1202,14 +1328,13 @@
               <small>
                 Disponible ahora
               </small>
+
             </div>
           `
         );
 
       }
     );
-
-
 
     L.circle(
       [-34.3484, -58.7927],
@@ -1221,7 +1346,6 @@
         fillOpacity: 0.08
       }
     ).addTo(mapa);
-
 
   </script>
 
