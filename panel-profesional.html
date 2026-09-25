@@ -15,6 +15,16 @@
 (async()=>{
  const list=document.getElementById("list");
  const sb=(typeof supabaseClient!=="undefined")?supabaseClient:window.supabaseClient;
+
+ // LOGOUT: se activa antes de cualquier posible "return"
+ document.getElementById("logout").onclick=async()=>{
+  const boton=document.getElementById("logout");
+  boton.disabled=true;
+  boton.textContent="Cerrando...";
+  if(sb) await sb.auth.signOut();
+  location.href="index.html";
+ };
+
  if(!sb){list.innerHTML='<div class="empty">No pudimos conectar con Sin Vueltas.</div>';return}
  const {data:{session}}=await sb.auth.getSession();
  if(!session){document.getElementById("session").textContent="Sesión no iniciada";list.innerHTML='<div class="empty">Iniciá sesión como profesional para ver tus oportunidades.</div>';return}
@@ -37,6 +47,5 @@
  }
  list.innerHTML=out||'<div class="empty">No hay oportunidades visibles.</div>';
  document.querySelectorAll(".interest[data-id]").forEach(b=>b.onclick=async()=>{const id=Number(b.dataset.id);b.disabled=true;b.textContent="Procesando...";const {error}=await sb.rpc("me_interesa",{p_match_id:id});if(error){document.getElementById("msg-"+id).textContent="No pudimos registrar el interés.";b.disabled=false;b.textContent="ME INTERESA — GRATIS"}else{b.textContent="ME INTERESA ✓";document.getElementById("msg-"+id).textContent="Interés registrado. El contacto se habilitará en el siguiente paso."}});
- document.getElementById("logout").onclick=async()=>{await sb.auth.signOut();location.href="index.html"};
 })();
 </script></body></html>
