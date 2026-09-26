@@ -275,6 +275,7 @@
 
                   <select id="solicitud-localidad" required>
                     <option value="Escobar">Escobar</option>
+                    <option value="Belén de Escobar">Belén de Escobar</option>
                     <option value="Matheu">Matheu</option>
                     <option value="Garín">Garín</option>
                     <option value="Pilar">Pilar</option>
@@ -1073,157 +1074,107 @@
   <script src="app.js"></script>
 
   <!-- ===================================================== -->
-  <!-- PUBLICACIÓN DE SOLICITUD -->
+  <!-- PUBLICACIÓN Y SEGUIMIENTO DE SOLICITUD -->
   <!-- ===================================================== -->
 
   <script>
     (() => {
+      const form=document.getElementById("solicitud-form");
+      const extra=document.getElementById("solicitud-extra");
+      const publicar=document.getElementById("publicar-solicitud");
+      const mensaje=document.getElementById("solicitud-mensaje");
+      if(!form||!extra||!publicar)return;
+      let seguimientoTimer=null;
 
-      const form = document.getElementById("solicitud-form");
-      const extra = document.getElementById("solicitud-extra");
-      const publicar = document.getElementById("publicar-solicitud");
-      const mensaje = document.getElementById("solicitud-mensaje");
-
-      if (!form || !extra || !publicar) return;
-
-      form.addEventListener("submit", (e) => {
-
+      form.addEventListener("submit",e=>{
         e.preventDefault();
-
-        if (!document.getElementById("solicitud-servicio").value) {
-          return;
-        }
-
-        extra.style.display = "block";
-
-        document
-          .getElementById("cliente-nombre")
-          .focus();
-
+        if(!document.getElementById("solicitud-servicio").value)return;
+        extra.style.display="block";
+        document.getElementById("cliente-nombre").focus();
       });
 
-      publicar.addEventListener("click", async () => {
+      function mostrarBuscando(d){
+        const n=Number(d.cantidad_matches||0);
+        mensaje.innerHTML=`<div style="margin-top:16px;padding:20px;border:1px solid rgba(20,231,183,.30);border-radius:16px;background:rgba(20,231,183,.06)">
+          <div style="color:#14e7b7;font-weight:800;margin-bottom:10px">✓ SOLICITUD PUBLICADA</div>
+          <div style="font-size:1.05rem;font-weight:800;margin-bottom:4px">${d.servicio}</div>
+          <div style="opacity:.75;margin-bottom:16px">${d.localidad} · SV-${String(d.solicitud_id).padStart(6,"0")}</div>
+          <div style="margin-bottom:8px">${n>0?`✓ Encontramos <strong>${n}</strong> profesional${n===1?"":"es"} compatible${n===1?"":"s"}.`:"Todavía no encontramos un profesional compatible."}</div>
+          <div style="margin-top:14px;display:flex;gap:9px;align-items:center;color:#14e7b7;font-weight:700"><span style="width:9px;height:9px;display:inline-block;border-radius:50%;background:#14e7b7;box-shadow:0 0 12px #14e7b7"></span>Esperando respuestas...</div>
+          <div style="margin-top:8px;opacity:.68;font-size:.85rem">Sin Vueltas está consultando profesionales disponibles.</div>
+        </div>`;
+      }
 
-        const nombre =
-          document.getElementById("cliente-nombre").value.trim();
-
-        const telefono =
-          document.getElementById("cliente-telefono").value.trim();
-
-        const servicio =
-          document.getElementById("solicitud-servicio").value;
-
-        const localidad =
-          document.getElementById("solicitud-localidad").value;
-
-        const descripcion =
-          document.getElementById("solicitud-descripcion").value.trim();
-
-        const urgente =
-          document.getElementById("solicitud-urgente").checked;
-
-        if (
-          !nombre ||
-          !telefono ||
-          !servicio ||
-          !localidad ||
-          !descripcion
-        ) {
-
-          mensaje.textContent =
-            "Completá nombre, WhatsApp y una breve descripción.";
-
-          return;
+      function mostrarInteresado(d){
+        const w=d.profesional_whatsapp?String(d.profesional_whatsapp).replace(/\D/g,""):"";
+        mensaje.innerHTML=`<div style="margin-top:16px;padding:22px;border:1px solid rgba(20,231,183,.45);border-radius:16px;background:rgba(20,231,183,.10)">
+          <div style="color:#14e7b7;font-weight:900;font-size:1.1rem;margin-bottom:14px">✓ ¡TENÉS UNA RESPUESTA!</div>
+          <div style="font-size:1.3rem;font-weight:900;margin-bottom:4px">${d.profesional_nombre||"Un profesional"}</div>
+          <div style="opacity:.8">${d.profesional_oficio||""}${d.profesional_localidad?" · "+d.profesional_localidad:""}</div>
+          <div style="margin-top:16px;line-height:1.5">Está interesado en ayudarte con tu solicitud <strong>SV-${String(d.solicitud_id).padStart(6,"0")}</strong>.</div>
+          ${w?`<button type="button" id="contactar-whatsapp" class="search-main-button" style="width:100%;margin-top:18px">Contactar por WhatsApp <span>→</span></button>`:`<div style="margin-top:16px;opacity:.75;font-size:.88rem">El profesional está interesado. Estamos preparando el contacto.</div>`}
+        </div>`;
+        if(w){
+          const b=document.getElementById("contactar-whatsapp");
+          if(b)b.onclick=()=>{
+            const texto=encodeURIComponent(`Hola ${d.profesional_nombre||""}, te contacto desde Sin Vueltas por la solicitud SV-${String(d.solicitud_id).padStart(6,"0")}.`);
+            const numero=w.startsWith("54")?w:`54${w}`;
+            window.open(`https://wa.me/${numero}?text=${texto}`,"_blank");
+          };
         }
+      }
 
-        if (typeof supabaseClient === "undefined") {
+      async function consultarEstado(id){
+        if(typeof supabaseClient==="undefined"||!id)return;
+        const {data,error}=await supabaseClient.rpc("estado_solicitud_cliente",{p_solicitud_id:Number(id)});
+        if(error){console.error("Error consultando estado:",error);return;}
+        const d=Array.isArray(data)?data[0]:data;
+        if(!d)return;
+        if(Number(d.cantidad_interesados)>0){
+          mostrarInteresado(d);
+          if(seguimientoTimer){clearInterval(seguimientoTimer);seguimientoTimer=null;}
+        }else mostrarBuscando(d);
+      }
 
-          mensaje.textContent =
-            "No pudimos conectar con Sin Vueltas. Recargá la página e intentá nuevamente.";
+      function iniciarSeguimiento(id){
+        localStorage.setItem("sinVueltasSolicitudActiva",String(id));
+        consultarEstado(id);
+        if(seguimientoTimer)clearInterval(seguimientoTimer);
+        seguimientoTimer=setInterval(()=>consultarEstado(id),5000);
+      }
 
-          return;
+      publicar.addEventListener("click",async()=>{
+        const nombre=document.getElementById("cliente-nombre").value.trim();
+        const telefono=document.getElementById("cliente-telefono").value.trim();
+        const servicio=document.getElementById("solicitud-servicio").value;
+        const localidad=document.getElementById("solicitud-localidad").value;
+        const descripcion=document.getElementById("solicitud-descripcion").value.trim();
+        const urgente=document.getElementById("solicitud-urgente").checked;
+        if(!nombre||!telefono||!servicio||!localidad||!descripcion){mensaje.textContent="Completá nombre, WhatsApp y una breve descripción.";return;}
+        if(typeof supabaseClient==="undefined"){mensaje.textContent="No pudimos conectar con Sin Vueltas. Recargá la página e intentá nuevamente.";return;}
+        publicar.disabled=true; publicar.textContent="Buscando profesionales..."; mensaje.textContent="";
+        try{
+          const {data:solicitudId,error:solicitudError}=await supabaseClient.rpc("publicar_solicitud",{p_cliente_nombre:nombre,p_telefono:telefono,p_servicio:servicio,p_localidad:localidad,p_modalidad:urgente?"urgente":"ahora",p_descripcion:descripcion,p_tipo_cliente:"domicilio",p_urgente:urgente});
+          if(solicitudError)throw solicitudError;
+          const id=Array.isArray(solicitudId)?solicitudId[0]:solicitudId;
+          const {error:matchError}=await supabaseClient.rpc("generar_matches",{p_solicitud_id:id});
+          if(matchError)throw matchError;
+          publicar.textContent="Solicitud publicada ✓";
+          iniciarSeguimiento(id);
+        }catch(error){
+          console.error("Error publicando solicitud:",error);
+          mensaje.textContent="No pudimos publicar la solicitud. Intentá nuevamente.";
+          publicar.disabled=false; publicar.innerHTML='Publicar solicitud <span>→</span>';
         }
-
-        publicar.disabled = true;
-        publicar.textContent = "Buscando profesionales...";
-        mensaje.textContent = "";
-
-        try {
-
-          const {
-            data: solicitudId,
-            error: solicitudError
-          } = await supabaseClient.rpc(
-            "publicar_solicitud",
-            {
-              p_cliente_nombre: nombre,
-              p_telefono: telefono,
-              p_servicio: servicio,
-              p_localidad: localidad,
-              p_modalidad: urgente ? "urgente" : "ahora",
-              p_descripcion: descripcion,
-              p_tipo_cliente: "domicilio",
-              p_urgente: urgente
-            }
-          );
-
-          if (solicitudError) {
-            throw solicitudError;
-          }
-
-          const id =
-            Array.isArray(solicitudId)
-              ? solicitudId[0]
-              : solicitudId;
-
-          const {
-            data: cantidadMatches,
-            error: matchError
-          } = await supabaseClient.rpc(
-            "generar_matches",
-            {
-              p_solicitud_id: id
-            }
-          );
-
-          if (matchError) {
-            throw matchError;
-          }
-
-          const cantidad =
-            Number(
-              Array.isArray(cantidadMatches)
-                ? cantidadMatches[0]
-                : cantidadMatches
-            ) || 0;
-
-          mensaje.innerHTML =
-            cantidad > 0
-              ? `<strong>¡Solicitud publicada!</strong> Encontramos ${cantidad} profesional${cantidad === 1 ? "" : "es"} compatible${cantidad === 1 ? "" : "s"}. Ya estamos buscando respuesta.`
-              : `<strong>¡Solicitud publicada!</strong> Todavía no encontramos un profesional compatible. La solicitud quedó registrada.`;
-
-          publicar.textContent =
-            "Solicitud publicada ✓";
-
-        } catch (error) {
-
-          console.error(
-            "Error publicando solicitud:",
-            error
-          );
-
-          mensaje.textContent =
-            "No pudimos publicar la solicitud. Intentá nuevamente.";
-
-          publicar.disabled = false;
-
-          publicar.innerHTML =
-            'Publicar solicitud <span>→</span>';
-
-        }
-
       });
 
+      const guardada=localStorage.getItem("sinVueltasSolicitudActiva");
+      if(guardada){
+        extra.style.display="block";
+        publicar.disabled=true;
+        publicar.textContent="Solicitud publicada ✓";
+        iniciarSeguimiento(Number(guardada));
+      }
     })();
   </script>
 
