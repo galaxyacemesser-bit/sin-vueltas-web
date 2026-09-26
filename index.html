@@ -1093,6 +1093,49 @@
         document.getElementById("cliente-nombre").focus();
       });
 
+      function detenerSeguimientoLocal(){
+        if(seguimientoTimer){clearInterval(seguimientoTimer);seguimientoTimer=null;}
+        localStorage.removeItem("sinVueltasSolicitudActiva");
+      }
+
+      function prepararOtraSolicitud(){
+        detenerSeguimientoLocal();
+        document.getElementById("cliente-nombre").value="";
+        document.getElementById("cliente-telefono").value="";
+        document.getElementById("solicitud-descripcion").value="";
+        document.getElementById("solicitud-urgente").checked=false;
+        mensaje.innerHTML="";
+        publicar.disabled=false;
+        publicar.innerHTML='Publicar solicitud <span>→</span>';
+        extra.style.display="none";
+        form.scrollIntoView({behavior:"smooth",block:"center"});
+      }
+
+      function conectarBotonesEstado(){
+        const otra=document.getElementById("hacer-otra-solicitud");
+        const cancelar=document.getElementById("cancelar-solicitud");
+        if(otra)otra.onclick=prepararOtraSolicitud;
+        if(cancelar)cancelar.onclick=()=>{
+          detenerSeguimientoLocal();
+          mensaje.innerHTML=`<div style="margin-top:16px;padding:20px;border:1px solid rgba(255,255,255,.16);border-radius:16px;background:rgba(255,255,255,.04)">
+            <div style="font-weight:800;margin-bottom:8px">Seguimiento cancelado en este dispositivo</div>
+            <div style="opacity:.75;line-height:1.5">La solicitud sigue registrada en Sin Vueltas. Este botón no borra ni modifica la solicitud en Supabase.</div>
+            <button type="button" id="hacer-otra-solicitud" class="search-main-button" style="width:100%;margin-top:16px">Hacer otra solicitud <span>→</span></button>
+          </div>`;
+          const nueva=document.getElementById("hacer-otra-solicitud");
+          if(nueva)nueva.onclick=prepararOtraSolicitud;
+          publicar.disabled=false;
+          publicar.innerHTML='Publicar solicitud <span>→</span>';
+        };
+      }
+
+      function botonesSolicitud(){
+        return `<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px">
+          <button type="button" id="hacer-otra-solicitud" class="search-main-button" style="width:100%">Hacer otra solicitud</button>
+          <button type="button" id="cancelar-solicitud" style="width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.22);background:transparent;color:inherit;font:inherit;font-weight:700;cursor:pointer">Cancelar solicitud</button>
+        </div>`;
+      }
+
       function mostrarBuscando(d){
         const n=Number(d.cantidad_matches||0);
         mensaje.innerHTML=`<div style="margin-top:16px;padding:20px;border:1px solid rgba(20,231,183,.30);border-radius:16px;background:rgba(20,231,183,.06)">
@@ -1102,7 +1145,9 @@
           <div style="margin-bottom:8px">${n>0?`✓ Encontramos <strong>${n}</strong> profesional${n===1?"":"es"} compatible${n===1?"":"s"}.`:"Todavía no encontramos un profesional compatible."}</div>
           <div style="margin-top:14px;display:flex;gap:9px;align-items:center;color:#14e7b7;font-weight:700"><span style="width:9px;height:9px;display:inline-block;border-radius:50%;background:#14e7b7;box-shadow:0 0 12px #14e7b7"></span>Esperando respuestas...</div>
           <div style="margin-top:8px;opacity:.68;font-size:.85rem">Sin Vueltas está consultando profesionales disponibles.</div>
+          ${botonesSolicitud()}
         </div>`;
+        conectarBotonesEstado();
       }
 
       function mostrarInteresado(d){
@@ -1113,6 +1158,7 @@
           <div style="opacity:.8">${d.profesional_oficio||""}${d.profesional_localidad?" · "+d.profesional_localidad:""}</div>
           <div style="margin-top:16px;line-height:1.5">Está interesado en ayudarte con tu solicitud <strong>SV-${String(d.solicitud_id).padStart(6,"0")}</strong>.</div>
           ${w?`<button type="button" id="contactar-whatsapp" class="search-main-button" style="width:100%;margin-top:18px">Contactar por WhatsApp <span>→</span></button>`:`<div style="margin-top:16px;opacity:.75;font-size:.88rem">El profesional está interesado. Estamos preparando el contacto.</div>`}
+          ${botonesSolicitud()}
         </div>`;
         if(w){
           const b=document.getElementById("contactar-whatsapp");
@@ -1122,6 +1168,7 @@
             window.open(`https://wa.me/${numero}?text=${texto}`,"_blank");
           };
         }
+        conectarBotonesEstado();
       }
 
       async function consultarEstado(id){
