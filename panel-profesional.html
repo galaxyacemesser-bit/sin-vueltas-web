@@ -1,51 +1,328 @@
 <!DOCTYPE html>
-<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Sin Vueltas | Panel profesional</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#050b14;color:#f5f7fb;font-family:Montserrat,sans-serif}header{border-bottom:1px solid #173a3b;padding:14px 5%;display:flex;justify-content:space-between;align-items:center}.logo{width:190px;max-width:45vw}.session{color:#9db0bd;font-size:13px}main{max-width:1100px;margin:auto;padding:45px 22px}.kicker{color:#22e7bd;font-weight:800;letter-spacing:.16em;font-size:12px}h1{font-size:clamp(34px,5vw,56px);margin:10px 0}.intro{color:#9db0bd;line-height:1.6}.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:30px 0}.sum,.card{background:#0b1726;border:1px solid #16463f;border-radius:18px;padding:20px}.sum small{color:#9db0bd;display:block;margin-bottom:8px}.sum strong{font-size:21px}.card{margin-top:16px}.top{display:flex;justify-content:space-between;gap:15px}.badge,.score{color:#35edc8;font-size:12px;font-weight:800}.score{border:1px solid #1a5b50;border-radius:20px;padding:8px 12px;height:max-content}.card h2{margin:12px 0 5px}.place,.privacy{color:#9db0bd;font-size:13px}.desc{margin-top:18px;background:#101e2e;border-radius:12px;padding:15px;line-height:1.5}.privacy{margin-top:12px}.actions{display:flex;gap:10px;margin-top:20px}.actions button,.logout{border-radius:11px;padding:13px 17px;font-weight:800;cursor:pointer}.pass,.logout{background:transparent;color:#dce5ed;border:1px solid #294150}.interest{flex:1;border:0;background:#35edc8;color:#04221d}.message{color:#35edc8;margin-top:12px;font-size:13px}.empty{background:#0b1726;border:1px solid #16463f;border-radius:18px;padding:28px;color:#9db0bd;text-align:center}@media(max-width:700px){.summary{grid-template-columns:1fr}.actions,.top{flex-direction:column}}
-</style></head><body>
-<header><a href="index.html"><img class="logo" src="sin-vueltas-logo-variante-a.png" alt="Sin Vueltas"></a><div><span class="session" id="session">Comprobando sesión...</span> <button class="logout" id="logout">Cerrar sesión</button></div></header>
-<main><div class="kicker">PANEL PROFESIONAL</div><h1 id="welcome">Tus oportunidades.</h1>
+*{box-sizing:border-box}
+body{margin:0;background:#050817;color:#fff;font-family:Arial,sans-serif}
+header{height:95px;padding:18px 7%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #15213b}
+.logo{width:190px;max-height:70px;object-fit:contain}
+.user{display:flex;align-items:center;gap:18px;color:#8d9ab8;font-size:14px}
+button{font:inherit;cursor:pointer}
+.logout{background:#111a30;color:#fff;border:1px solid #243451;border-radius:9px;padding:11px 18px;font-weight:700}
+main{max-width:1100px;margin:auto;padding:65px 24px}
+.kicker,.badge{color:#2ee5cf;font-weight:800;font-size:13px}
+h1{font-size:54px;margin:14px 0 14px}
+.intro{color:#91a0c0;line-height:1.6;max-width:900px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:35px 0}
+.stat{background:linear-gradient(135deg,#0b1230,#101b45);border:1px solid #183b64;border-radius:16px;padding:22px}
+.stat small{color:#91a0c0}.stat strong{display:block;font-size:24px;margin-top:7px}
+h2.section{font-size:24px;margin:30px 0 18px}
+.card{background:linear-gradient(135deg,#09132d,#0b2044);border:1px solid #1a4369;border-radius:18px;padding:24px;margin-bottom:18px}
+.top{display:flex;justify-content:space-between;gap:20px}
+.card h2{font-size:27px;margin:8px 0}
+.place,.privacy{color:#93a3c3;font-size:14px}
+.score{border:1px solid #1b6f78;color:#2ee5cf;border-radius:30px;padding:8px 12px;height:max-content;font-size:12px;font-weight:800}
+.desc{margin:25px 0 16px;font-size:18px}
+.actions{display:grid;grid-template-columns:110px 1fr;gap:12px;margin-top:18px}
+.pass,.interest{height:52px;border-radius:10px;font-weight:800}
+.pass{background:#10182b;border:1px solid #34435f;color:#fff}
+.interest{border:0;background:#35dfd0;color:#071019}
+.interest:disabled{opacity:.7;cursor:default}
+.message{color:#2ee5cf;font-size:14px;margin-top:10px;min-height:18px}
+.empty{padding:30px;text-align:center;color:#93a3c3;background:#0a1530;border:1px solid #183b64;border-radius:15px}
+.notice{position:fixed;right:22px;bottom:22px;width:min(380px,calc(100% - 44px));background:#0b1833;border:1px solid #2ee5cf;border-radius:16px;padding:20px;box-shadow:0 15px 50px #0009;z-index:100;transform:translateY(160%);opacity:0;transition:.35s}
+.notice.show{transform:translateY(0);opacity:1}
+.notice b{display:block;color:#2ee5cf;margin-bottom:7px;font-size:17px}
+.notice p{margin:0;color:#dce6f8;line-height:1.4}
+.live{display:inline-flex;align-items:center;gap:7px;margin-top:10px;color:#8190ae;font-size:12px}
+.live-dot{width:8px;height:8px;border-radius:50%;background:#536078}
+.live.ok .live-dot{background:#2ee5cf;box-shadow:0 0 10px #2ee5cf}
+@media(max-width:700px){
+ header{padding:14px 18px}.logo{width:145px}.user span{display:none}
+ main{padding:38px 17px}h1{font-size:38px}.stats{grid-template-columns:1fr}
+ .top{display:block}.score{display:inline-block;margin-top:12px}
+ .actions{grid-template-columns:1fr}.pass{order:2}
+}
+</style>
+</head>
+<body>
+
+<header>
+<a href="index.html"><img src="sin-vueltas-logo-variante-a.png" class="logo" alt="Sin Vueltas"></a>
+<div class="user">
+<span id="email"></span>
+<button id="logout" class="logout">Cerrar sesión</button>
+</div>
+</header>
+
+<main>
+<div class="kicker">PANEL PROFESIONAL</div>
+<h1 id="welcome">Cargando...</h1>
 <p class="intro">Acá aparecen solicitudes compatibles con tu oficio, zona y preferencias. El contacto del cliente permanece protegido hasta avanzar con la oportunidad.</p>
-<div class="summary"><div class="sum"><small>Estado</small><strong id="status">—</strong></div><div class="sum"><small>Oportunidades</small><strong id="count">—</strong></div><div class="sum"><small>Zona</small><strong id="zone">—</strong></div></div>
-<h2>Nuevas oportunidades</h2><section id="list"><div class="empty">Buscando oportunidades...</div></section></main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="app.js"></script>
+
+<div id="live" class="live">
+<span class="live-dot"></span>
+<span id="liveText">Conectando oportunidades en tiempo real...</span>
+</div>
+
+<section class="stats">
+<div class="stat"><small>Estado</small><strong id="status">—</strong></div>
+<div class="stat"><small>Oportunidades</small><strong id="count">0</strong></div>
+<div class="stat"><small>Zona</small><strong id="zone">—</strong></div>
+</section>
+
+<h2 class="section">Nuevas oportunidades</h2>
+<div id="list"><div class="empty">Cargando oportunidades...</div></div>
+</main>
+
+<div id="notice" class="notice">
+<b>🔔 Nueva oportunidad</b>
+<p id="noticeText">Tenés un nuevo trabajo compatible.</p>
+</div>
+
 <script>
-(async()=>{
- const list=document.getElementById("list");
- const sb=(typeof supabaseClient!=="undefined")?supabaseClient:window.supabaseClient;
+const SUPABASE_URL="https://ewjpqmjheohnzzybpshk.supabase.co";
+const SUPABASE_KEY="sb_publishable_wDCAqHFH7FcU0Jl6SlF9HQ_Pws13cKK";
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
- // LOGOUT: se activa antes de cualquier posible "return"
- document.getElementById("logout").onclick=async()=>{
-  const boton=document.getElementById("logout");
-  boton.disabled=true;
-  boton.textContent="Cerrando...";
-  if(sb) await sb.auth.signOut();
-  location.href="index.html";
- };
+let profesional=null;
+let realtimeChannel=null;
+let primeraCarga=true;
 
- if(!sb){list.innerHTML='<div class="empty">No pudimos conectar con Sin Vueltas.</div>';return}
- const {data:{session}}=await sb.auth.getSession();
- if(!session){document.getElementById("session").textContent="Sesión no iniciada";list.innerHTML='<div class="empty">Iniciá sesión como profesional para ver tus oportunidades.</div>';return}
- document.getElementById("session").textContent=session.user.email||"Sesión activa";
- const {data:p}=await sb.from("profesionales").select("id,nombre,oficio,localidad,activo,disponible").eq("user_id",session.user.id).single();
- if(!p){list.innerHTML='<div class="empty">No encontramos tu perfil profesional.</div>';return}
- document.getElementById("welcome").textContent="Hola, "+p.nombre+".";
- document.getElementById("status").textContent=p.activo?(p.disponible?"Disponible":"Activo"):"Inactivo";
- document.getElementById("zone").textContent=p.localidad||"—";
- const {data:ms,error}=await sb.from("matches").select("id,solicitud_id,score,estado,matched_at").eq("profesional_id",p.id).in("estado",["seleccionado","interesado"]).order("matched_at",{ascending:false});
- if(error){list.innerHTML='<div class="empty">No pudimos cargar las oportunidades.</div>';return}
- document.getElementById("count").textContent=ms?.length||0;
- if(!ms?.length){list.innerHTML='<div class="empty">No tenés oportunidades pendientes.</div>';return}
- const esc=s=>String(s??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
- let out="";
- for(const m of ms){
-  const {data:s}=await sb.from("solicitudes").select("servicio,localidad,descripcion,urgente,tipo_cliente").eq("id",m.solicitud_id).single();
-  if(!s)continue; const interested=m.estado==="interesado";
-  out+=`<article class="card"><div class="top"><div><div class="badge">● ${s.urgente?"SOLICITUD URGENTE":"NUEVA OPORTUNIDAD"}</div><h2>${esc(s.servicio)}</h2><div class="place">⌖ ${esc(s.localidad)} · ${esc(s.tipo_cliente||"domicilio")}</div></div><div class="score">Coincidencia ${esc(m.score??"—")}</div></div><div class="desc">${esc(s.descripcion||"Sin descripción adicional.")}</div><div class="privacy">El teléfono del cliente no se muestra en esta etapa.</div><div class="actions"><button class="pass" type="button">PASAR</button><button class="interest" data-id="${m.id}" ${interested?"disabled":""}>${interested?"ME INTERESA ✓":"ME INTERESA — GRATIS"}</button></div><div class="message" id="msg-${m.id}">${interested?"Ya marcaste interés en esta oportunidad.":""}</div></article>`;
+const list=document.getElementById("list");
+const esc=s=>String(s??"")
+ .replaceAll("&","&amp;")
+ .replaceAll("<","&lt;")
+ .replaceAll(">","&gt;")
+ .replaceAll('"',"&quot;");
+
+document.getElementById("logout").onclick=async()=>{
+ const b=document.getElementById("logout");
+ b.disabled=true;
+ b.textContent="Cerrando...";
+ if(realtimeChannel)await sb.removeChannel(realtimeChannel);
+ await sb.auth.signOut();
+ location.href="index.html";
+};
+
+function mostrarAviso(texto){
+ document.getElementById("noticeText").textContent=texto;
+ const n=document.getElementById("notice");
+ n.classList.add("show");
+ setTimeout(()=>n.classList.remove("show"),7000);
+}
+
+async function cargarOportunidades(){
+ if(!profesional)return;
+
+ const {data:ms,error}=await sb
+  .from("matches")
+  .select("id,solicitud_id,score,estado,matched_at")
+  .eq("profesional_id",profesional.id)
+  .in("estado",["seleccionado","interesado"])
+  .order("matched_at",{ascending:false});
+
+ if(error){
+  list.innerHTML='<div class="empty">No pudimos cargar las oportunidades.</div>';
+  return;
  }
+
+ document.getElementById("count").textContent=ms?.length||0;
+
+ if(!ms?.length){
+  list.innerHTML='<div class="empty">No tenés oportunidades pendientes.</div>';
+  primeraCarga=false;
+  return;
+ }
+
+ let out="";
+
+ for(const m of ms){
+  const {data:s}=await sb
+   .from("solicitudes")
+   .select("servicio,localidad,descripcion,urgente,tipo_cliente")
+   .eq("id",m.solicitud_id)
+   .single();
+
+  if(!s)continue;
+
+  const interested=m.estado==="interesado";
+
+  out+=`
+  <article class="card">
+   <div class="top">
+    <div>
+     <div class="badge">● ${s.urgente?"SOLICITUD URGENTE":"NUEVA OPORTUNIDAD"}</div>
+     <h2>${esc(s.servicio)}</h2>
+     <div class="place">⌖ ${esc(s.localidad)} · ${esc(s.tipo_cliente||"domicilio")}</div>
+    </div>
+    <div class="score">Coincidencia ${esc(m.score??"—")}</div>
+   </div>
+
+   <div class="desc">${esc(s.descripcion||"Sin descripción adicional.")}</div>
+   <div class="privacy">El teléfono del cliente no se muestra en esta etapa.</div>
+
+   <div class="actions">
+    <button class="pass" data-pass="${m.id}" ${interested?"disabled":""}>
+     PASAR
+    </button>
+
+    <button class="interest" data-interest="${m.id}" ${interested?"disabled":""}>
+     ${interested?"ME INTERESA ✓":"ME INTERESA — GRATIS"}
+    </button>
+   </div>
+
+   <div class="message" id="msg-${m.id}">
+    ${interested?"Ya marcaste interés en esta oportunidad.":""}
+   </div>
+  </article>`;
+ }
+
  list.innerHTML=out||'<div class="empty">No hay oportunidades visibles.</div>';
- document.querySelectorAll(".interest[data-id]").forEach(b=>b.onclick=async()=>{const id=Number(b.dataset.id);b.disabled=true;b.textContent="Procesando...";const {error}=await sb.rpc("me_interesa",{p_match_id:id});if(error){document.getElementById("msg-"+id).textContent="No pudimos registrar el interés.";b.disabled=false;b.textContent="ME INTERESA — GRATIS"}else{b.textContent="ME INTERESA ✓";document.getElementById("msg-"+id).textContent="Interés registrado. El contacto se habilitará en el siguiente paso."}});
+
+ document.querySelectorAll("[data-interest]").forEach(b=>{
+  b.onclick=async()=>{
+   const id=Number(b.dataset.interest);
+   b.disabled=true;
+   b.textContent="Procesando...";
+
+   const {error}=await sb.rpc("me_interesa",{p_match_id:id});
+
+   if(error){
+    document.getElementById("msg-"+id).textContent="No pudimos registrar el interés.";
+    b.disabled=false;
+    b.textContent="ME INTERESA — GRATIS";
+    return;
+   }
+
+   b.textContent="ME INTERESA ✓";
+   document.getElementById("msg-"+id).textContent=
+    "Interés registrado. El contacto se habilitará en el siguiente paso.";
+
+   await cargarOportunidades();
+  };
+ });
+
+ document.querySelectorAll("[data-pass]").forEach(b=>{
+  b.onclick=async()=>{
+   const id=Number(b.dataset.pass);
+
+   if(!confirm("¿Querés pasar esta oportunidad? No volverá a aparecer en tu panel."))return;
+
+   b.disabled=true;
+   b.textContent="Procesando...";
+
+   const {data,error}=await sb.rpc("pasar_oportunidad",{p_match_id:id});
+
+   if(error||data!==true){
+    const msg=document.getElementById("msg-"+id);
+    if(msg)msg.textContent="No pudimos pasar esta oportunidad.";
+    b.disabled=false;
+    b.textContent="PASAR";
+    return;
+   }
+
+   await cargarOportunidades();
+  };
+ });
+
+ primeraCarga=false;
+}
+
+function iniciarRealtime(){
+ const live=document.getElementById("live");
+ const liveText=document.getElementById("liveText");
+
+ realtimeChannel=sb
+  .channel("oportunidades-profesional-"+profesional.id)
+
+  .on(
+   "postgres_changes",
+   {
+    event:"INSERT",
+    schema:"public",
+    table:"matches",
+    filter:"profesional_id=eq."+profesional.id
+   },
+   async payload=>{
+    await cargarOportunidades();
+
+    const solicitudId=payload.new?.solicitud_id;
+    let texto="Tenés un nuevo trabajo compatible.";
+
+    if(solicitudId){
+     const {data:s}=await sb
+      .from("solicitudes")
+      .select("servicio,localidad")
+      .eq("id",solicitudId)
+      .single();
+
+     if(s)texto=`${s.servicio} · ${s.localidad}`;
+    }
+
+    mostrarAviso(texto);
+   }
+  )
+
+  .on(
+   "postgres_changes",
+   {
+    event:"UPDATE",
+    schema:"public",
+    table:"matches",
+    filter:"profesional_id=eq."+profesional.id
+   },
+   async()=>{await cargarOportunidades()}
+  )
+
+  .subscribe(status=>{
+   if(status==="SUBSCRIBED"){
+    live.classList.add("ok");
+    liveText.textContent="Oportunidades en tiempo real activadas";
+   }else if(status==="CHANNEL_ERROR"||status==="TIMED_OUT"){
+    live.classList.remove("ok");
+    liveText.textContent="Reconectando oportunidades...";
+   }
+  });
+}
+
+(async()=>{
+ const {data:{session}}=await sb.auth.getSession();
+
+ if(!session){
+  location.href="login-profesional.html";
+  return;
+ }
+
+ document.getElementById("email").textContent=session.user.email||"";
+
+ const {data:p,error}=await sb
+  .from("profesionales")
+  .select("id,nombre,oficio,localidad,activo,disponible")
+  .eq("user_id",session.user.id)
+  .maybeSingle();
+
+ if(error||!p){
+  document.getElementById("welcome").textContent="Panel profesional";
+  list.innerHTML='<div class="empty">No encontramos tu perfil profesional.</div>';
+  return;
+ }
+
+ profesional=p;
+
+ document.getElementById("welcome").textContent="Hola, "+p.nombre+".";
+ document.getElementById("status").textContent=
+  p.activo?(p.disponible?"Disponible":"Activo"):"Inactivo";
+ document.getElementById("zone").textContent=p.localidad||"—";
+
+ await cargarOportunidades();
+ iniciarRealtime();
 })();
-</script></body></html>
+</script>
+
+</body>
+</html>
