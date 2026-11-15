@@ -274,13 +274,22 @@
                   <small>Ubicación</small>
 
                   <select id="solicitud-localidad" required>
-                    <option value="Escobar">Escobar</option>
-                    <option value="Belén de Escobar">Belén de Escobar</option>
-                    <option value="Matheu">Matheu</option>
-                    <option value="Garín">Garín</option>
-                    <option value="Pilar">Pilar</option>
-                    <option value="Campana">Campana</option>
-                    <option value="Zárate">Zárate</option>
+                    <option value="">Elegí tu localidad</option>
+                    <optgroup label="Partido de Escobar">
+                      <option value="Belén de Escobar">Belén de Escobar (centro)</option>
+                      <option value="Garín">Garín</option>
+                      <option value="Ingeniero Maschwitz">Ingeniero Maschwitz</option>
+                      <option value="Matheu">Matheu</option>
+                      <option value="Maquinista F. Savio">Maquinista F. Savio</option>
+                      <option value="Loma Verde">Loma Verde</option>
+                      <option value="24 de Febrero">24 de Febrero</option>
+                      <option value="Escobar">Escobar (zona general)</option>
+                    </optgroup>
+                    <optgroup label="Otras localidades">
+                      <option value="Pilar">Pilar</option>
+                      <option value="Campana">Campana</option>
+                      <option value="Zárate">Zárate</option>
+                    </optgroup>
                   </select>
 
                 </div>
@@ -938,58 +947,6 @@
 
         <div class="footer-brand">
 
-          <div class="footer-logo">
-
-            <div class="footer-logo-symbol">
-
-              <svg
-                viewBox="0 0 120 72"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-
-                <path
-                  d="M7 55
-                     C31 41,55 28,91 22
-                     C67 31,49 41,34 54
-                     C55 41,78 37,106 39
-                     C81 42,59 49,39 64
-                     C29 69,18 66,7 55Z"
-                  fill="#13e7b7"
-                />
-
-                <path
-                  d="M13 48 C37 32,59 22,92 15"
-                  fill="none"
-                  stroke="#71ffe5"
-                  stroke-width="3"
-                  stroke-linecap="round"
-                />
-
-                <circle
-                  cx="103"
-                  cy="11"
-                  r="7"
-                  fill="#13e7b7"
-                />
-
-              </svg>
-
-            </div>
-
-            <div>
-
-              <div class="footer-brand-name">
-                SIN <strong>VUELTAS</strong>
-              </div>
-
-              <small>
-                TE CONECTA CON LA SOLUCIÓN
-              </small>
-
-            </div>
-
-          </div>
-
           <div class="footer-slogan">
 
             Más que servicios,<br>
@@ -1204,13 +1161,23 @@
           const {data:solicitudId,error:solicitudError}=await supabaseClient.rpc("publicar_solicitud",{p_cliente_nombre:nombre,p_telefono:telefono,p_servicio:servicio,p_localidad:localidad,p_modalidad:urgente?"urgente":"ahora",p_descripcion:descripcion,p_tipo_cliente:"domicilio",p_urgente:urgente});
           if(solicitudError)throw solicitudError;
           const id=Array.isArray(solicitudId)?solicitudId[0]:solicitudId;
-          const {error:matchError}=await supabaseClient.rpc("generar_matches",{p_solicitud_id:id});
-          if(matchError)throw matchError;
+          // El pedido ya existe: guardar su ID ANTES de intentar el matching.
+          localStorage.setItem("sinVueltasSolicitudActiva",String(id));
           publicar.textContent="Solicitud publicada ✓";
+          try {
+            const {error:matchError}=await supabaseClient.rpc("generar_matches",{p_solicitud_id:id});
+            if(matchError) {
+              console.error("Solicitud guardada; error de matching:",matchError);
+              mensaje.textContent=`Solicitud SV-${String(id).padStart(6,"0")} guardada. Hubo un problema al buscar profesionales; no vuelvas a publicarla.`;
+            }
+          } catch(matchError) {
+            console.error("Solicitud guardada; error de matching:",matchError);
+            mensaje.textContent=`Solicitud SV-${String(id).padStart(6,"0")} guardada. No pudimos completar la búsqueda de profesionales.`;
+          }
           iniciarSeguimiento(id);
         }catch(error){
           console.error("Error publicando solicitud:",error);
-          mensaje.textContent="No pudimos publicar la solicitud. Intentá nuevamente.";
+          mensaje.textContent="No pudimos confirmar la publicación. Revisá si ya aparece una solicitud antes de volver a intentar.";
           publicar.disabled=false; publicar.innerHTML='Publicar solicitud <span>→</span>';
         }
       });
